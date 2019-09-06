@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">parkingfinder</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="first_name">First Name</string>
+    <string name="registration">Registration</string>
+</resources>
