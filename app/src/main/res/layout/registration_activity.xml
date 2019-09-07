@@ -42,6 +42,23 @@
         android:background="#ffffff"
         android:drawableLeft="@drawable/password"
         android:hint="@string/confirm_password"/>
+
+    <EditText
+        android:id="@+id/edittext_firstname"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:hint="@string/firstname" />
+
+    <EditText
+        android:id="@+id/edittext_lastname"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:hint="@string/lastname" />
+
     <Button
         android:id="@+id/button_register"
         android:layout_width="206dp"

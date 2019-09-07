@@ -9,4 +9,8 @@ public class RegistrationActivityTest {
     @Test
     public void onCreate() {
     }
+
+    @Test
+    public void onCreate1() {
+    }
 }

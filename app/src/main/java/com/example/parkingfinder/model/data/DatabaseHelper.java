@@ -18,7 +18,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT)");
+        sqLiteDatabase.execSQL(
+                "CREATE TABLE registeruser (" +
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "username TEXT, password TEXT, firstname TEXT, lastname TEXT )");
     }
 
     @Override
@@ -27,11 +30,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    public long addUser(String user, String password){
+    public long addUser(String user, String password, String firstname, String lastname){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("username",user);
         contentValues.put("password",password);
+        contentValues.put("firstname",firstname);
+        contentValues.put("lastname",lastname);
         long res = db.insert("registeruser",null,contentValues);
         db.close();
         return  res;
@@ -42,7 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = getReadableDatabase();
         String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
         String[] selectionArgs = { username, password };
-        Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
+        Cursor cursor = db.query(
+                TABLE_NAME,columns,selection,selectionArgs,null,null,null);
         int count = cursor.getCount();
         cursor.close();
         db.close();

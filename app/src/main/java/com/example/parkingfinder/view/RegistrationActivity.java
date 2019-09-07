@@ -24,6 +24,8 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText mTextUsername;
     EditText mTextPassword;
     EditText mTextCnfPassword;
+    EditText mTextFirstname;
+    EditText mTextLastname;
     Button mButtonRegister;
     TextView mTextViewLogin;
     private IPF_Endpoint mPF_Endpoint;
@@ -45,6 +47,8 @@ public class RegistrationActivity extends AppCompatActivity {
         mTextUsername = (EditText)findViewById(R.id.edittext_username);
         mTextPassword = (EditText)findViewById(R.id.edittext_password);
         mTextCnfPassword = (EditText)findViewById(R.id.edittext_cnf_password);
+        mTextFirstname = (EditText) findViewById(R.id.edittext_firstname);
+        mTextLastname = (EditText) findViewById(R.id.edittext_lastname);
         mButtonRegister = (Button)findViewById(R.id.button_register);
         mTextViewLogin = (TextView)findViewById(R.id.textview_login);
         mTextViewLogin.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +65,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
                 String cnf_pwd = mTextCnfPassword.getText().toString().trim();
+                String firstname = mTextFirstname.getText().toString().trim();
+                String lastname = mTextLastname.getText().toString().trim();
 
                 if(pwd.equals(cnf_pwd)){
-                    long val = db.addUser(user,pwd);
+                    long val = db.addUser(user,pwd,firstname,lastname);
                     if(val > 0){
                         Toast.makeText(
                                 RegistrationActivity.this,

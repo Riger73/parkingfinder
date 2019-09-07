@@ -6,6 +6,8 @@
     <string name="first_name">First Name</string>
     <string name="registration">Registration</string>
     <string name="username">username</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
     <string name="password">password</string>
     <string name="login">login</string>
     <string name="not_registered">not registered</string>
