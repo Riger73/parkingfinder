@@ -5,4 +5,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="first_name">First Name</string>
     <string name="registration">Registration</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="not_registered">not registered</string>
+    <string name="register">register</string>
+    <string name="already_registered">already registered</string>
+    <string name="options_menu">Options Menu</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

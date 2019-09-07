@@ -1,58 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.RegistrationActivity">
+    android:background="@drawable/img_background"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.example.parkingfinder.view.RegistrationActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="127dp"
+        android:layout_marginTop="50dp"
+        app:srcCompat="@drawable/logo"/>
+
+    <EditText
+        android:id="@+id/edittext_username"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="2dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/username"
+        android:hint="@string/username"/>
+
+    <EditText
+        android:id="@+id/edittext_password"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/password"
+        android:hint="@string/password"/>
+
+    <EditText
+        android:id="@+id/edittext_cnf_password"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:drawableLeft="@drawable/password"
+        android:hint="@string/confirm_password"/>
     <Button
-        android:id="@+id/bRegistration"
+        android:id="@+id/button_register"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#04ea00"
+        android:textColor="#ffffff"
+        android:text="@string/register"/>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="253dp"
-        android:layout_marginTop="315dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="128dp"
-        android:text="@string/registration"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintEnd_toEndOf="@+id/nav_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastName" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textColor="#ffffff"
+            android:text="@string/already_registered"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/firstName"
-        android:layout_width="383dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginEnd="14dp"
-        android:hint="First Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textview_login"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:textColor="#04ea00"
+            android:textSize="16sp"
+            android:text="@string/login"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/lastName"
-        android:layout_width="388dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="14dp"
-        android:hint="Last Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
