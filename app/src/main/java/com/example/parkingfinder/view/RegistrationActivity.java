@@ -92,8 +92,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     customer.setFirstname(firstname);
                     customer.setLastname(lastname);
 
+                    // Stores in local db
                     long val = db.addUser(user,pwd,firstname,lastname);
+
+                    // Checks for empty values
                     if(val > 0){
+                        // Sends to endpoint
                         customerDatagram(customer);
                         Toast.makeText(
                                 RegistrationActivity.this,
@@ -108,7 +112,6 @@ public class RegistrationActivity extends AppCompatActivity {
                                 RegistrationActivity.this,
                                 "Registeration Error",Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 else{
                     Toast.makeText(
