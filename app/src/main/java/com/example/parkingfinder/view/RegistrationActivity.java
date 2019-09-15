@@ -11,13 +11,21 @@ import android.widget.Toast;
 
 import com.example.parkingfinder.R;
 import com.example.parkingfinder.model.Constants;
+import com.example.parkingfinder.model.Customer;
 import com.example.parkingfinder.model.data.DatabaseHelper;
-import com.example.parkingfinder.model.data.IPF_Endpoint;
+import com.example.parkingfinder.model.data.IEndpoint_Customer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 public class RegistrationActivity extends AppCompatActivity {
     DatabaseHelper db;
@@ -28,15 +36,24 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText mTextLastname;
     Button mButtonRegister;
     TextView mTextViewLogin;
-    private IPF_Endpoint mPF_Endpoint;
+    private IEndpoint_Customer customerApi;
 
     // Initialises retrofit HTTP transfer - gets data from endpoint
-    private void initAnonService() {
-        Retrofit retrofit =
-                new Retrofit.Builder().baseUrl(Constants.URL_PF_ENDPOINT)
+    private void customerDatagram
+    (Customer customer) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Retrofit.Builder retrofitBuilder =
+                new Retrofit.Builder()
+                        .baseUrl(Constants.URL_PF_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mPF_Endpoint = retrofit.create(IPF_Endpoint.class);
+                .client(okHttpClient);
+        Retrofit retrofit = retrofitBuilder.build();
+        customerApi = retrofit.create(IEndpoint_Customer.class);
+
+        //Customer customer =
+        //        new Customer(username, password, firstname, lastname);
+        Call<ResponseBody> callableResponse = customerApi.createCustomer(customer);
+        //dumpCallableResponse(callableResponse);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +86,15 @@ public class RegistrationActivity extends AppCompatActivity {
                 String lastname = mTextLastname.getText().toString().trim();
 
                 if(pwd.equals(cnf_pwd)){
+                    Customer customer = new Customer();
+                    customer.setUsername(user);
+                    customer.setPassword(pwd);
+                    customer.setFirstname(firstname);
+                    customer.setLastname(lastname);
+
                     long val = db.addUser(user,pwd,firstname,lastname);
                     if(val > 0){
+                        customerDatagram(customer);
                         Toast.makeText(
                                 RegistrationActivity.this,
                                 "You have registered",Toast.LENGTH_SHORT).show();
