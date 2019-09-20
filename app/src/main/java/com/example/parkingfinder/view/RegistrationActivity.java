@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -28,6 +30,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.POST;
 
 public class RegistrationActivity extends AppCompatActivity {
+
+    private static final Pattern Password_Pattern = Pattern.compile ("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\\\S+$).{6,}$");
+
     DatabaseHelper db;
     EditText mTextUsername;
     EditText mTextPassword;
@@ -76,6 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 startActivity(LoginIntent);
             }
         });
+
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     customer.setFirstname(firstname);
                     customer.setLastname(lastname);
 
+
                     // Stores in local db
                     long val = db.addUser(user,pwd,firstname,lastname);
 
@@ -107,17 +114,22 @@ public class RegistrationActivity extends AppCompatActivity {
                                         RegistrationActivity.this,LoginActivity.class);
                         startActivity(moveToLogin);
                     }
+
                     else{
                         Toast.makeText(
                                 RegistrationActivity.this,
                                 "Registeration Error",Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
                 else{
                     Toast.makeText(
                             RegistrationActivity.this,
                             "Password is not matching",Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
     }

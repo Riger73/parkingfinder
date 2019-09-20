@@ -15,4 +15,5 @@
     <string name="already_registered">already registered</string>
     <string name="options_menu">Options Menu</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="Email">Email</string>
 </resources>

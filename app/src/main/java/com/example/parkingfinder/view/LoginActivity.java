@@ -12,9 +12,13 @@ import com.example.parkingfinder.model.data.DatabaseHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 //import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText mTextUsername;
     EditText mTextPassword;
     Button mButtonLogin;
+    Button mButtonshowpassword;
     TextView mTextViewRegister;
     DatabaseHelper db;
 //    ViewGroup progressView;
 //    protected boolean isProgressShowing = false;
 
+    CheckBox showpassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         //View v = this.getLayoutInflater().inflate(R.layout.progressbar,null);
         //dialog.setContentView(v);
         //dialog.show();
+
+
 
         db = new DatabaseHelper(this);
         mTextUsername = (EditText) findViewById(R.id.edittext_username);
@@ -52,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(
                             LoginActivity.this, "Login Error", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
