@@ -21,11 +21,11 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface IEndpoint_Customer {
-    @POST("/customers")
+    @POST("/signup")
     Call<ResponseBody> createCustomer(@Body Customer customer);
 
     @FormUrlEncoded
-    @POST("/customers")
+    @POST("/signup")
     Call<ResponseBody> createCustomer(
         @Field("username") String username,
         @Field("password") String password,
