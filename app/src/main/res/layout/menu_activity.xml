@@ -28,8 +28,7 @@
         android:text="Yazeed"
         android:textColor="#ffffff"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintstart_toEndOf="@id/user_profile" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:textSize="16sp"
@@ -40,106 +39,171 @@
         android:layout_marginStart="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintstart_toEndOf="@id/user_profile"
         app:layout_constraintTop_toTopOf="@id/edittext_firstname"
         />
 
-    <GridLayout
+    <LinearLayout
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="60dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:padding="14dp"
-        android:rowCount="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/edittext_firstname"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_editor_absoluteX="0dp">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/cardview_light_background"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="6dp" >
+            android:layout_width="130dp"
+            android:layout_height="141dp"
+            android:layout_margin="10dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
+                android:layout_width="128dp"
+                android:layout_height="143dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_maps" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Map"
-                    android:textColor="fffff"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/cardview_light_background"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="6dp" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@null"
                     android:src="@drawable/ic_maps" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Map"
-                    android:textColor="fffff"
-                    android:textSize="14sp"
                     android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="10dp"
+                    android:background="@color/lightgray" />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="141dp"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="128dp"
+                android:layout_height="143dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_lease" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Lease"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="10dp"
+                    android:background="@color/lightgray" />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="141dp"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="128dp"
+                android:layout_height="143dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_parking_svgrepo_com" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Bookings"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="10dp"
+                    android:background="@color/lightgray" />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="141dp"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="128dp"
+                android:layout_height="143dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_settings_applications_black_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Manage Bookings"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="10dp"
+                    android:background="@color/lightgray" />
+
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
 
+    </LinearLayout>
 
-    </GridLayout>
-
-
-
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="#FF4081"
+        android:textColor="#ffffff"
+        android:text="Log Out"/>
 
 </LinearLayout>
