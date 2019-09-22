@@ -50,8 +50,8 @@ public class RegistrationActivity extends AppCompatActivity {
         Retrofit.Builder retrofitBuilder =
                 new Retrofit.Builder()
                         .baseUrl(Constants.URL_PF_ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient);
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(okHttpClient);
         Retrofit retrofit = retrofitBuilder.build();
         customerApi = retrofit.create(IEndpoint_Customer.class);
 
@@ -91,7 +91,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 String firstname = mTextFirstname.getText().toString().trim();
                 String lastname = mTextLastname.getText().toString().trim();
 
-                if(pwd.equals(cnf_pwd)){
+                // Matcher = Match password to regex
+                Matcher matcher = Password_Pattern.matcher(pwd);
+
+                // Matches = Check if password == matcher (true)
+                boolean validated = matcher.matches();
+
+                if(pwd.equals(cnf_pwd) && validated){
                     Customer customer = new Customer();
                     customer.setUsername(user);
                     customer.setPassword(pwd);
