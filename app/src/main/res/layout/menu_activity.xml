@@ -17,7 +17,7 @@
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/user_profile" />
+        app:srcCompat="@drawable/ic_user_profile" />
 
     <TextView
         android:id="@+id/edittext_firstname"
