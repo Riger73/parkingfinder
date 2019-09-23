@@ -97,6 +97,21 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Matches = Check if password == matcher (true)
                 boolean validated = matcher.matches();
 
+                if (!(pwd.equals(cnf_pwd)))
+                {
+                    Toast.makeText(
+                            RegistrationActivity.this,
+                            "Password is not matching",Toast.LENGTH_SHORT).show();
+                }
+
+                if (!validated)
+                {
+                    Toast.makeText(
+                            RegistrationActivity.this,
+                            "The password needs to contain at least one uppercase letter, lowercase letter, " +
+                                    "symbol, have a minimum length of 6 and not be the same as any other fields.",Toast.LENGTH_SHORT).show();
+                }
+
                 if(pwd.equals(cnf_pwd) && validated){
                     Customer customer = new Customer();
                     customer.setUsername(user);
@@ -128,14 +143,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                 }
-
-                else{
-                    Toast.makeText(
-                            RegistrationActivity.this,
-                            "Password is not matching",Toast.LENGTH_SHORT).show();
-                }
-
-
             }
         });
     }
