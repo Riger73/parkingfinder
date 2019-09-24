@@ -21,7 +21,7 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface IEndpoint_Customer {
-    @POST("/api/customers")
+    @POST("/signup")
     Call<ResponseBody> createCustomer(@Body Customer customer);
 
     @FormUrlEncoded
