@@ -19,7 +19,6 @@
 
     <string name="owner">Owner</string>
     <string name="contact">Contact</string>
-    <string name="parking_spot_ID">Parking Spot ID</string>
     <string name="description">Description</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
