@@ -27,7 +27,7 @@ public interface IEndpoint_Customer {
     @FormUrlEncoded
     @POST("/signup")
     Call<ResponseBody> createCustomer(
-        @Field("username") String username,
+        @Field("email") String username,
         @Field("password") String password,
         @Field("firstname") String firstname,
         @Field("lastname") String lastname

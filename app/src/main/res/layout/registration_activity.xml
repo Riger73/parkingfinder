@@ -22,7 +22,7 @@
         android:layout_marginTop="10dp"
         android:paddingLeft="2dp"
         android:background="#ffffff"
-        android:drawableLeft="@drawable/username"
+        android:drawableLeft="@drawable/email"
         android:hint="@string/username"/>
 
     <EditText

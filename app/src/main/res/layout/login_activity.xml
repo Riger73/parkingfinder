@@ -24,17 +24,17 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/edittext_username"
+            android:id="@+id/editTextEmail"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="#ffffff"
-            android:drawableLeft="@drawable/username"
-            android:hint="@string/username"
+            android:drawableLeft="@drawable/email"
+            android:hint="@string/email"
             android:paddingLeft="2dp" />
 
         <EditText
-            android:id="@+id/edittext_password"
+            android:id="@+id/editTextPassword"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/buttonLogin"
         android:layout_width="190dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"

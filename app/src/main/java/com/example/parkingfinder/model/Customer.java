@@ -55,7 +55,7 @@ public class Customer {
     }
 
     public String toString() {
-        return "username: " + username + ", password: " + password + ", firstname: "
+        return "email: " + username + ", password: " + password + ", firstname: "
                 + firstname + ", lastname: " + lastname;
     }
 }

@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME ="register.db";
     public static final String TABLE_NAME ="registeruser";
     public static final String COL_1 ="ID";
-    public static final String COL_2 ="username";
+    public static final String COL_2 ="email";
     public static final String COL_3 ="password";
 
     public DatabaseHelper(Context context) {
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public long addUser(String user, String password, String firstname, String lastname){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("username",user);
+        contentValues.put("email",user);
         contentValues.put("password",password);
         contentValues.put("firstname",firstname);
         contentValues.put("lastname",lastname);

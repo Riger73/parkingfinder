@@ -51,7 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
         customerApi = retrofit.create(IEndpoint_Customer.class);
 
         //Customer customer =
-        //        new Customer(username, password, firstname, lastname);
+        //        new Customer(email, password, firstname, lastname);
         Call<ResponseBody> callableResponse = customerApi.createCustomer(customer);
         //dumpCallableResponse(callableResponse);
     }

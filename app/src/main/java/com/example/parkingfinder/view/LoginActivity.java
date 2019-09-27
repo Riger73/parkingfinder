@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText mTextUsername;
+    EditText mTextEmail;
     EditText mTextPassword;
     Button mButtonLogin;
     TextView mTextViewRegister;
@@ -39,9 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         //dialog.show();
 
         db = new DatabaseHelper(this);
-        mTextUsername = (EditText) findViewById(R.id.edittext_username);
-        mTextPassword = (EditText) findViewById(R.id.edittext_password);
-        mButtonLogin = (Button) findViewById(R.id.button_login);
+        mTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        mTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        mButtonLogin = (Button) findViewById(R.id.buttonLogin);
         mTextViewRegister = (TextView) findViewById(R.id.textview_register);
         mTextViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = mTextUsername.getText().toString().trim();
+                String email = mTextEmail.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
-                Boolean res = db.checkUser(user, pwd);
+                Boolean res = db.checkUser(email, pwd);
                 if (res == true) {
                     Intent HomePage = new Intent(
                             LoginActivity.this, MenuActivity.class);
