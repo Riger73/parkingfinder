@@ -61,11 +61,11 @@ public class ListingActivity extends AppCompatActivity {
         mTextOwner = (EditText)findViewById(R.id.edittext_owner);
         mTextContact = (EditText)findViewById(R.id.edittext_contact);
         mTextParkingspotID = (EditText)findViewById(R.id.edittext_parkingspotID);
-        mTextDescription = (EditText) findViewById(R.id.edittext_description;
+        mTextDescription = (EditText) findViewById(R.id.edittext_description);
         mTextLatitude = (EditText) findViewById(R.id.edittext_latitude);
         mTextLongitude= (EditText) findViewById(R.id.edittext_longitude);
         mButtonListing = (Button)findViewById(R.id.button_listing);
-        mTextViewList= (TextView)findViewById(R.id.textview_list);
+        //mTextViewList= (TextView)findViewById(R.id.textview_list);
         mTextViewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,12 +86,12 @@ public class ListingActivity extends AppCompatActivity {
                 String longitude = mTextLongitude.getText().toString().trim();
 
                 Listing listing = new Listing();
-                listing.getOwner(owner);
-                listing.getContact(contact);
-                listing.getParkingSpotID(parkingSpotID);
-                listing.getDescription(description);
-                listing.getLatitude(latitude);
-                listing.getLongitude(longitude);
+                listing.setOwner(owner);
+                listing.setContact(contact);
+                listing.setParkingSpotID(parkingSpotID);
+                listing.setDescription(description);
+                listing.setLatitude(latitude);
+                listing.setLongitude(longitude);
                     // Checks for empty values
                     if(listing != null){
                         // Sends to endpoint
