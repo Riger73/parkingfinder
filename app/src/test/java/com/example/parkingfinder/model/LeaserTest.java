@@ -1,4 +1,4 @@
-package com.example.parkingfinder.ModelTest;
+package com.example.parkingfinder.model;
 
 public class LeaserTest {
 }
