@@ -1,20 +1,24 @@
 package com.example.parkingfinder.model;
 
+import androidx.annotation.IntegerRes;
+import androidx.annotation.Keep;
+
+@Keep
 public class Listing {
     private String owner;
-    private String parkingID;
-    private int phoneNo;
+    private Integer contact;
+    private String parkingspotID;
     private String description;
     private String latitude;
     private String longitude;
 
     //constructor
-    public Listing(String owner, String parkingID, int phoneNo, String description,
+    public Listing(String owner, Integer contact, String parkingspotID, String description,
                    String latitude, String longitude)
     {
         this.owner = owner;
-        this.parkingID = parkingID;
-        this.phoneNo = phoneNo;
+        this.contact = contact;
+        this.parkingspotID = parkingspotID;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -28,20 +32,16 @@ public class Listing {
         this.owner = owner;
     }
 
-    public String getParkingID() {
-        return parkingID;
+    public Integer getContact() { return contact; }
+
+    public void setContact(String Contact) {
+        this.contact = contact;
     }
 
-    public void setParkingID(String parkingID) {
-        this.parkingID = parkingID;
-    }
+    public String getParkingSpotID() { return parkingspotID; }
 
-    public int getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(int phoneNo) {
-        this.phoneNo = phoneNo;
+    public void setParkingSpotID(String parkingspotID) {
+        this.parkingspotID = parkingspotID;
     }
 
     public String getDescription() {

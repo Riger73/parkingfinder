@@ -42,6 +42,20 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return  res;
     }
 
+    public long addListing(String owner, Integer contact, String parkingSpotID, String description, String latitude, String longitude){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("owner",owner);
+        contentValues.put("contact",contact);
+        contentValues.put("parkingSpotID",parkingSpotID);
+        contentValues.put("description",description);
+        contentValues.put("latitude",latitude);
+        contentValues.put("longitude",longitude);
+        long res = db.insert("registeruser",null,contentValues);
+        db.close();
+        return  res;
+    }
+
     public boolean checkUser(String username, String password){
         String[] columns = { COL_1 };
         SQLiteDatabase db = getReadableDatabase();
