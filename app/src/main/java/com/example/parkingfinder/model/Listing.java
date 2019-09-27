@@ -12,13 +12,9 @@ public class Listing {
     private String latitude;
     private String longitude;
 
-    public Listing ()
-    {
 
-    }
     //constructor
-    public Listing(String owner, Integer contact, String parkingspotID, String description,
-                   String latitude, String longitude)
+    public Listing()
     {
         this.owner = owner;
         this.contact = contact;
@@ -72,3 +68,4 @@ public class Listing {
         this.longitude = longitude;
     }
 }
+
