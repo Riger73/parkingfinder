@@ -1,6 +1,7 @@
 package com.example.parkingfinder.view;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,10 +9,16 @@ import com.example.parkingfinder.R;
 import com.example.parkingfinder.controller.MenuActivity;
 import com.example.parkingfinder.model.Customer;
 import com.example.parkingfinder.model.data.DatabaseHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.TextUtils;
 import android.view.View;
 //import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,70 +26,83 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
-    EditText mTextEmail;
-    EditText mTextPassword;
-    Button mButtonLogin;
-    TextView mTextViewRegister;
-    DatabaseHelper db;
-//    ViewGroup progressView;
-//    protected boolean isProgressShowing = false;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    //defining view objects
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private Button buttonSignup;
+    private ProgressDialog progressDialog;
+
+
+    //defining firebaseauth object
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        //Dialog dialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
-        //View v = this.getLayoutInflater().inflate(R.layout.progressbar,null);
-        //dialog.setContentView(v);
-        //dialog.show();
+        //initializing firebase auth object
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        db = new DatabaseHelper(this);
-        mTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        mTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        mButtonLogin = (Button) findViewById(R.id.buttonLogin);
-        mTextViewRegister = (TextView) findViewById(R.id.textview_register);
-        mTextViewRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent registerIntent =
-                        new Intent(LoginActivity.this, RegistrationActivity.class);
-                startActivity(registerIntent);
-            }
-        });
+        //initializing views
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
-        mButtonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = mTextEmail.getText().toString().trim();
-                String pwd = mTextPassword.getText().toString().trim();
-                Boolean res = db.checkUser(email, pwd);
-                if (res == true) {
-                    Intent HomePage = new Intent(
-                            LoginActivity.this, MenuActivity.class);
-                    startActivity(HomePage);
-                } else {
-                    Toast.makeText(
-                            LoginActivity.this, "Login Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        buttonSignup = (Button) findViewById(R.id.buttonLogin);
+
+        progressDialog = new ProgressDialog(this);
+
+        //attaching listener to button
+        buttonSignup.setOnClickListener(this);
     }
 
-  /*  public void showProgressingView() {
+    private void registerUser(){
 
-        if (!isProgressShowing) {
-            View view=findViewById(R.id.progressBar1);
-            view.bringToFront();
+        //getting email and password from edit texts
+        String email = editTextEmail.getText().toString().trim();
+        String password  = editTextPassword.getText().toString().trim();
+
+        //checking if email and passwords are empty
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+            return;
         }
+
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //if the email and password are not empty
+        //displaying a progress dialog
+
+        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.show();
+
+        //creating a new user
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //checking if success
+                        if(task.isSuccessful()){
+                            //display some message here
+                            Toast.makeText(LoginActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
+                        }else{
+                            //display some message here
+                            Toast.makeText(LoginActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+
     }
 
-    public void hideProgressingView() {
-        View v = this.findViewById(android.R.id.content).getRootView();
-        ViewGroup viewGroup = (ViewGroup) v;
-        viewGroup.removeView(progressView);
-        isProgressShowing = false;
+    @Override
+    public void onClick(View view) {
+        //calling register method on click
+        registerUser();
     }
-   */
+}
 }
