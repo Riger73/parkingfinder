@@ -21,6 +21,7 @@
     <string name="adrress">Address</string>
     <string name="BookingDate">BookingDate</string>
     <string name="list">list</string>
+    <string name="email">Email</string>
 
     <string name="owner">Owner</string>
     <string name="contact">Contact</string>
