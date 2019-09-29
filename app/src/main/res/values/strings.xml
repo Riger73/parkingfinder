@@ -16,4 +16,16 @@
     <string name="options_menu">Options Menu</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="Email">Email</string>
+
+    <string name="customer">Customer</string>
+    <string name="adrress">Address</string>
+    <string name="BookingDate">BookingDate</string>
+    <string name="list">list</string>
+
+    <string name="owner">Owner</string>
+    <string name="contact">Contact</string>
+    <string name="parkingspotID">ParkingspotID</string>
+    <string name="description">Description</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 </resources>
