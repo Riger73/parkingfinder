@@ -16,7 +16,7 @@
         app:srcCompat="@drawable/logo"/>
 
     <EditText
-        android:id="@+id/edittext_owner"
+        android:id="@+id/edittext_customer"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -26,7 +26,7 @@
         android:hint="@string/customer"/>
 
     <EditText
-        android:id="@+id/edittext_contact"
+        android:id="@+id/edittext_registration"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
@@ -35,7 +35,7 @@
         android:hint="@string/registration"/>
 
     <EditText
-        android:id="@+id/edittext_parkingspotID"
+        android:id="@+id/edittext_address"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
@@ -43,24 +43,22 @@
         android:hint="Address" />
 
     <EditText
-        android:id="@+id/edittext_description"
+        android:id="@+id/edittext_email"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:hint="@string/Email" />
-
     <EditText
-        android:id="@+id/edittext_latitude"
+        android:id="@+id/edittext_bookingdate"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:hint="@string/BookingDate" />
 
-
     <Button
-        android:id="@+id/button_listing"
+        android:id="@+id/button_booking"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"

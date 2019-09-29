@@ -3,7 +3,6 @@ package com.example.parkingfinder.model.data;
 import android.widget.DatePicker;
 
 import com.example.parkingfinder.model.Booking;
-import com.example.parkingfinder.model.Booking;
 
 import org.w3c.dom.Comment;
 
@@ -25,11 +24,11 @@ import retrofit2.http.Url;
 
 public interface IEndpoint_Booking {
 
-    @POST("/Bookings")
-    Call<ResponseBody> createListing(@Body Booking Booking);
+    @POST("/bookings")
+    Call<ResponseBody> createBooking(@Body Booking Booking);
 
     @FormUrlEncoded
-    @POST("/Bookings")
+    @POST("/bookings")
     Call<ResponseBody> createListing(
             @Field("customer") String customer,
             @Field("email") Integer email,

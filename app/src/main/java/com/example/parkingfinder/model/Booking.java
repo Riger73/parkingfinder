@@ -9,7 +9,6 @@ public class Booking {
     private String customer;
     private DatePicker bookingdate;
     private Integer email;
-    private String name;
     private String address;
     private String registration;
 
@@ -37,11 +36,6 @@ public class Booking {
         this.email = email;
     }
 
-    public String getName() { return name; }
-
-    public void setParkingSpotID(String name) {
-        this.name = name;
-    }
 
     public String getAddress() {
         return address;
