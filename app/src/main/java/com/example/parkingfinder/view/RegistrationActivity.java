@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.parkingfinder.R;
-import com.example.parkingfinder.controller.MenuActivity;
 import com.example.parkingfinder.model.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
