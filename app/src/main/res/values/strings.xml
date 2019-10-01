@@ -22,4 +22,5 @@
     <string name="input_error_password_length">Password needs to be at least 6 characters</string>
     <string name="input_error_rego">Please enter a valid vehicle registration</string>
     <string name="registration_success">Registration Successful!</string>
+    <string name="BookingDate">booking date</string>
 </resources>

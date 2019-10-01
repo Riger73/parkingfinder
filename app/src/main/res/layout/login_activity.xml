@@ -40,7 +40,10 @@
             android:layout_marginTop="20dp"
             android:background="#ffffff"
             android:drawableLeft="@drawable/password"
-            android:hint="@string/password" />
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            />
+
     </LinearLayout>
 
     <Button
