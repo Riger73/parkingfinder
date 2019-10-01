@@ -2,6 +2,8 @@ package com.example.parkingfinder.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.parkingfinder.R;
+import com.example.parkingfinder.controller.MenuActivity;
 import com.example.parkingfinder.model.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -129,7 +132,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 public void onComplete(@NonNull Task<Void> task) {
                                     progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(RegistrationActivity.this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                                        Intent i = new Intent(
+                                                RegistrationActivity.this,
+                                                LoginActivity.class);
+                                        startActivity(i);
+                                        Toast.makeText(RegistrationActivity.this,
+                                                getString(R.string.registration_success),
+                                                Toast.LENGTH_LONG).show();
                                     } else {
                                         //display a failure message
                                     }
