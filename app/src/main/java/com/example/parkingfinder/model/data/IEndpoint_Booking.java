@@ -6,8 +6,6 @@ import com.example.parkingfinder.model.Booking;
 
 import org.w3c.dom.Comment;
 
-import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

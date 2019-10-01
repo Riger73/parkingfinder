@@ -79,7 +79,7 @@ public class BookingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String customer = mTextCustomer.getText().toString().trim();
                 String address = mTextAddress.getText().toString().trim();
-                //Integer email = mTextEmail.getText().toString().trim();
+                String email = mTextEmail.getText().toString();
                 String bookingdate = mTextBookingDate.getText().toString().trim();
                 String registration = mTextRegistration.getText().toString().trim();
 
