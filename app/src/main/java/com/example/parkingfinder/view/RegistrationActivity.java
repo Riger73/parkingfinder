@@ -132,10 +132,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 public void onComplete(@NonNull Task<Void> task) {
                                     progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
-                                        Intent i = new Intent(
+                                        Intent intRegistration = new Intent(
                                                 RegistrationActivity.this,
                                                 LoginActivity.class);
-                                        startActivity(i);
+                                        startActivity(intRegistration);
                                         Toast.makeText(RegistrationActivity.this,
                                                 getString(R.string.registration_success),
                                                 Toast.LENGTH_LONG).show();
