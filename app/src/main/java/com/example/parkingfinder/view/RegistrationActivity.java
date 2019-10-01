@@ -1,124 +1,163 @@
 package com.example.parkingfinder.view;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.parkingfinder.R;
-import com.example.parkingfinder.model.Constants;
 import com.example.parkingfinder.model.Customer;
-import com.example.parkingfinder.model.data.DatabaseHelper;
-import com.example.parkingfinder.model.data.IEndpoint_Customer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-import java.util.HashMap;
-import java.util.Map;
+    private EditText mEmail;
+    private EditText mPassword;
+    private EditText cnfPassword;
+    private EditText mFirstname;
+    private EditText mLastname;
+    private EditText mRego;
+    private ProgressBar progressBar;
 
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.POST;
+    private FirebaseAuth mAuth;
 
-public class RegistrationActivity extends AppCompatActivity {
-    DatabaseHelper db;
-    EditText mTextUsername;
-    EditText mTextPassword;
-    EditText mTextCnfPassword;
-    EditText mTextFirstname;
-    EditText mTextLastname;
-    Button mButtonRegister;
-    TextView mTextViewLogin;
-    private IEndpoint_Customer customerApi;
-
-    // Initialises retrofit HTTP transfer - gets data from endpoint
-    private void customerDatagram
-    (Customer customer) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Retrofit.Builder retrofitBuilder =
-                new Retrofit.Builder()
-                        .baseUrl(Constants.URL_PF_ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient);
-        Retrofit retrofit = retrofitBuilder.build();
-        customerApi = retrofit.create(IEndpoint_Customer.class);
-
-        //Customer customer =
-        //        new Customer(username, password, firstname, lastname);
-        Call<ResponseBody> callableResponse = customerApi.createCustomer(customer);
-        //dumpCallableResponse(callableResponse);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
 
-        db = new DatabaseHelper(this);
-        mTextUsername = (EditText)findViewById(R.id.edittext_username);
-        mTextPassword = (EditText)findViewById(R.id.edittext_password);
-        mTextCnfPassword = (EditText)findViewById(R.id.edittext_cnf_password);
-        mTextFirstname = (EditText) findViewById(R.id.edittext_firstname);
-        mTextLastname = (EditText) findViewById(R.id.edittext_lastname);
-        mButtonRegister = (Button)findViewById(R.id.button_register);
-        mTextViewLogin = (TextView)findViewById(R.id.textview_login);
-        mTextViewLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent LoginIntent =
-                        new Intent(RegistrationActivity.this,LoginActivity.class);
-                startActivity(LoginIntent);
-            }
-        });
-        mButtonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String user = mTextUsername.getText().toString().trim();
-                String pwd = mTextPassword.getText().toString().trim();
-                String cnf_pwd = mTextCnfPassword.getText().toString().trim();
-                String firstname = mTextFirstname.getText().toString().trim();
-                String lastname = mTextLastname.getText().toString().trim();
+        mEmail = findViewById(R.id.edittext_email);
+        mPassword = findViewById(R.id.edittext_password);
+        cnfPassword = findViewById(R.id.edittext_cnf_password);
+        mFirstname = findViewById(R.id.edittext_firstname);
+        mLastname = findViewById(R.id.edittext_lastname);
+        mRego = findViewById(R.id.edittext_rego);
+        progressBar = findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.GONE);
 
-                if(pwd.equals(cnf_pwd)){
-                    Customer customer = new Customer();
-                    customer.setUsername(user);
-                    customer.setPassword(pwd);
-                    customer.setFirstname(firstname);
-                    customer.setLastname(lastname);
+        mAuth = FirebaseAuth.getInstance();
 
-                    // Stores in local db
-                    long val = db.addUser(user,pwd,firstname,lastname);
+        findViewById(R.id.button_register).setOnClickListener(this);
+    }
 
-                    // Checks for empty values
-                    if(val > 0){
-                        // Sends to endpoint
-                        customerDatagram(customer);
-                        Toast.makeText(
-                                RegistrationActivity.this,
-                                "You have registered",Toast.LENGTH_SHORT).show();
-                        Intent moveToLogin =
-                                new Intent(
-                                        RegistrationActivity.this,LoginActivity.class);
-                        startActivity(moveToLogin);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mAuth.getCurrentUser() != null) {
+            //handle the already login user
+        }
+    }
+
+    private void registerUser() {
+        final String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        final String checkPassword = cnfPassword.getText().toString().trim();
+        final String firstname = mFirstname.getText().toString().trim();
+        final String lastname = mLastname.getText().toString().trim();
+        final String rego = mRego.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            mEmail.setError(getString(R.string.input_error_email));
+            mEmail.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmail.setError(getString(R.string.input_error_email));
+            mEmail.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            mPassword.setError(getString(R.string.input_error_password));
+            mPassword.requestFocus();
+            return;
+        }
+
+        if (password.length() < 6) {
+            mPassword.setError(getString(R.string.input_error_password_length));
+            mPassword.requestFocus();
+            return;
+        }
+
+        if (firstname.isEmpty()) {
+            mFirstname.setError(getString(R.string.input_error_name));
+            mFirstname.requestFocus();
+            return;
+        }
+
+        if (lastname.isEmpty()) {
+            mLastname.setError(getString(R.string.input_error_name));
+            mLastname.requestFocus();
+            return;
+        }
+
+        if (rego.isEmpty()) {
+            mRego.setError(getString(R.string.input_error_rego));
+            mRego.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            Customer customer = new Customer(
+                                    email,
+                                    firstname,
+                                    lastname,
+                                    rego
+                            );
+
+                            FirebaseDatabase.getInstance().getReference("Customers")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    progressBar.setVisibility(View.GONE);
+                                    if (task.isSuccessful()) {
+                                        Intent intRegistration = new Intent(
+                                                RegistrationActivity.this,
+                                                LoginActivity.class);
+                                        startActivity(intRegistration);
+                                        Toast.makeText(RegistrationActivity.this,
+                                                getString(R.string.registration_success),
+                                                Toast.LENGTH_LONG).show();
+                                    } else {
+                                        //display a failure message
+                                    }
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                    else{
-                        Toast.makeText(
-                                RegistrationActivity.this,
-                                "Registeration Error",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Toast.makeText(
-                            RegistrationActivity.this,
-                            "Password is not matching",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                });
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_register:
+                registerUser();
+                break;
+        }
     }
 }
