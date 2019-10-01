@@ -9,25 +9,24 @@ import com.google.gson.annotations.SerializedName;
 import androidx.annotation.Keep;
 
 @Keep
-public class Customer {
-    private String username;
-    private String password;
-    private String firstname;
-    private String lastname;
+public class Customer extends User {
+
+    private String email, firstname, lastname, rego;
 
     public Customer() {
-        this.username = username;
-        this.password = password;
+
+    }
+
+    public Customer
+            (String email, String firstname, String lastname, String rego){
+        this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.rego = rego;
     }
 
     public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        this.email = username;
     }
 
     public void setFirstname(String firstname) {
@@ -38,12 +37,12 @@ public class Customer {
         this.lastname = lastname;
     }
 
-    public String getUsername() {
-        return username;
+    public void setRego(String rego) {
+        this.rego = rego;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
     public String getFirstname() {
@@ -54,8 +53,12 @@ public class Customer {
         return lastname;
     }
 
+    public String getrego() {
+        return rego;
+    }
+
     public String toString() {
-        return "email: " + username + ", password: " + password + ", firstname: "
-                + firstname + ", lastname: " + lastname;
+        return "email: " + email + ", firstname: " + firstname + ", lastname: " + lastname +
+                ", rego: " + rego;
     }
 }

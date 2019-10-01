@@ -65,7 +65,7 @@
             android:text="@string/not_registered"/>
 
         <TextView
-            android:id="@+id/textview_register"
+            android:id="@+id/textViewRegister"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:paddingLeft="10dp"

@@ -6,6 +6,7 @@
     <string name="first_name">First Name</string>
     <string name="registration">Registration</string>
     <string name="email">Email Address</string>
+    <string name="rego">Vehicle Registration</string>
     <string name="firstname">First Name</string>
     <string name="lastname">Last Name</string>
     <string name="password">password</string>
@@ -15,4 +16,10 @@
     <string name="already_registered">already registered</string>
     <string name="options_menu">Options Menu</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="input_error_name">Please enter a valid name</string>
+    <string name="input_error_email">Please enter a valid email address</string>
+    <string name="input_error_password">Please enter a valid password</string>
+    <string name="input_error_password_length">Password needs to be at least 6 characters</string>
+    <string name="input_error_rego">Please enter a valid vehicle registration</string>
+    <string name="registration_success">Registration Successful!</string>
 </resources>

@@ -16,14 +16,14 @@
         app:srcCompat="@drawable/logo"/>
 
     <EditText
-        android:id="@+id/edittext_username"
+        android:id="@+id/edittext_email"
         android:layout_width="206dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:paddingLeft="2dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/email"
-        android:hint="@string/username"/>
+        android:hint="@string/email"
+        android:paddingLeft="2dp" />
 
     <EditText
         android:id="@+id/edittext_password"
@@ -59,6 +59,14 @@
         android:background="#ffffff"
         android:hint="@string/lastname" />
 
+    <EditText
+        android:id="@+id/edittext_rego"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:background="#ffffff"
+        android:hint="@string/rego"
+        tools:layout_marginTop="20dp" />
+
     <Button
         android:id="@+id/button_register"
         android:layout_width="206dp"
@@ -91,5 +99,11 @@
             android:text="@string/login"/>
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 </LinearLayout>
