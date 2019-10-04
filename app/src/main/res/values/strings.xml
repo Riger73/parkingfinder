@@ -26,4 +26,5 @@
     <string name="description">Description</string>
     <string name="address">Address</string>
     <string name="leaser">Leaser</string>
+    <string name="title_activity_map">Map</string>
 </resources>
