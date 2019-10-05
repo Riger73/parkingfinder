@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_background"
-    tools:context="com.example.parkingfinder.controller.MenuActivity"
+    tools:context="com.pp1.parkingfinder.view.MenuActivity"
     android:orientation="vertical"
     android:gravity="center_horizontal">
 

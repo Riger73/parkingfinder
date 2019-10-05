@@ -7,7 +7,7 @@
     android:background="@drawable/img_background"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.example.parkingfinder.view.BookingActivity">
+    tools:context="com.pp1.parkingfinder.view.BookingActivity">
 
     <ImageView
         android:layout_width="wrap_content"

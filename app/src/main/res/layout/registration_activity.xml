@@ -7,19 +7,19 @@
     android:background="@drawable/img_background"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.example.parkingfinder.view.RegistrationActivity">
+    tools:context="com.pp1.parkingfinder.view.RegistrationActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="127dp"
+        android:layout_width="72dp"
+        android:layout_height="53dp"
         android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/logo"/>
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/edittext_email"
         android:layout_width="206dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/email"
         android:hint="@string/email"
@@ -32,9 +32,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/password"
-        app:passwordToggleEnabled="true"
-        android:inputType="textPassword"
-        android:hint="@string/password"/>
+        android:hint="@string/password" />
 
     <EditText
         android:id="@+id/edittext_cnf_password"
@@ -43,8 +41,7 @@
         android:layout_marginTop="20dp"
         android:background="#ffffff"
         android:drawableLeft="@drawable/password"
-        android:inputType="textPassword"
-        android:hint="@string/confirm_password"/>
+        android:hint="@string/confirm_password" />
 
     <EditText
         android:id="@+id/edittext_firstname"
@@ -66,9 +63,9 @@
         android:id="@+id/edittext_rego"
         android:layout_width="206dp"
         android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:background="#ffffff"
-        android:hint="@string/rego"
-        tools:layout_marginTop="20dp" />
+        android:hint="@string/rego" />
 
     <Button
         android:id="@+id/button_register"
