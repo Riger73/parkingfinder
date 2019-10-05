@@ -64,8 +64,16 @@ public class RegistrationActivity extends AppCompatActivity implements
      *
      * @param email
      * @param password
+     * @param firstname
+     * @param lastname
+     * @param rego
+     *
      */
-    public void registerNewEmail(final String email, String password) {
+    public void registerNewEmail(final String email, String password, String firstname,
+                                 String lastname, String rego) {
+        final String eFirstname = firstname;
+        final String eLastname = lastname;
+        final String eRego = rego;
 
         showDialog();
 
@@ -78,12 +86,15 @@ public class RegistrationActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: AuthState: "
                                     + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
+                            String firstname = eFirstname;
                             //insert some default data
                             User user = new User();
                             user.setEmail(email);
                             user.setUsername(email.substring(0, email.indexOf("@")));
                             user.setUser_id(FirebaseAuth.getInstance().getUid());
+                            user.setFirstname(firstname);
+                            user.setLastname(eLastname);
+                            user.setRego(eRego);
 
                             FirebaseFirestoreSettings settings =
                                     new FirebaseFirestoreSettings.Builder()
@@ -165,7 +176,9 @@ public class RegistrationActivity extends AppCompatActivity implements
                             mConfirmPassword.getText().toString())) {
 
                         //Initiate registration task
-                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString());
+                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString(),
+                                mFirstname.getText().toString(), mLastname.getText().toString(),
+                                mRego.getText().toString());
                     } else {
                         Toast.makeText(RegistrationActivity.this,
                                 "Passwords do not Match", Toast.LENGTH_SHORT).show();
