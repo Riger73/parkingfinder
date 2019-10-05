@@ -7,7 +7,7 @@
     android:background="@drawable/img_background"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.example.parkingfinder.view.RegistrationActivity">
+    tools:context="com.pp1.parkingfinder.view.RegistrationActivity">
 
     <ImageView
         android:layout_width="72dp"
