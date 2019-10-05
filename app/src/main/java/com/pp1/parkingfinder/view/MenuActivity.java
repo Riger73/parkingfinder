@@ -25,7 +25,7 @@ public class MenuActivity extends AppCompatActivity implements
 
         findViewById(R.id.selectMap).setOnClickListener(this);
         findViewById(R.id.listLeases).setOnClickListener(this);
-        findViewById(R.id.makeBooking).setOnClickListener(this);
+        findViewById(R.id.makeRating).setOnClickListener(this);
         findViewById(R.id.listBooking).setOnClickListener(this);
         findViewById(R.id.button_logout).setOnClickListener(this);
     }
@@ -45,7 +45,7 @@ public class MenuActivity extends AppCompatActivity implements
                 startActivity(intent);
                 break;
             }
-            case R.id.makeBooking: {
+            case R.id.makeRating: {
                 Intent intent = new Intent(MenuActivity.this,
                         BookingActivity.class);
                 startActivity(intent);
