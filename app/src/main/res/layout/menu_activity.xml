@@ -25,22 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
-        android:text="Yazeed"
+        android:text="Hello"
         android:textColor="#ffffff"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:textSize="16sp"
-        android:text="S3543535"
-        android:id="@+id/user_id"
-        android:textColor="#ffffff"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/edittext_firstname"
-        />
 
     <LinearLayout
         android:clipToPadding="false"
@@ -140,17 +128,10 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/makeBooking"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/ic_parking_svgrepo_com" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Bookings"
-                    android:textStyle="bold" />
+                    android:id="@+id/makeRating"
+                    android:layout_width="86dp"
+                    android:layout_height="93dp"
+                    android:src="@drawable/rate_us" />
 
                 <View
                     android:layout_width="match_parent"
