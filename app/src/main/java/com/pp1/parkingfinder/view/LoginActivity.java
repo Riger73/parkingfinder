@@ -23,8 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.model.User;
 import com.pp1.parkingfinder.UserClient;
+import com.pp1.parkingfinder.model.User;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -172,7 +172,12 @@ public class LoginActivity extends AppCompatActivity implements
             }
 
             case R.id.buttonLogin:{
-                signIn();
+                try {
+                    signIn();
+                } catch (Exception e) {
+                    Log.w(TAG, "Sign in failed", e);
+
+                }
                 Intent intent = new Intent(LoginActivity.this,
                         MenuActivity.class);
                 startActivity(intent);
