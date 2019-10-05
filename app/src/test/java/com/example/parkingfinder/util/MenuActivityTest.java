@@ -1,8 +1,6 @@
-package com.example.parkingfinder.controller;
+package com.example.parkingfinder.util;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class MenuActivityTest {
 

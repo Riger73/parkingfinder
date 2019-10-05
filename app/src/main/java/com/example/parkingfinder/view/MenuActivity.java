@@ -1,4 +1,4 @@
-package com.example.parkingfinder.controller;
+package com.example.parkingfinder.view;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
