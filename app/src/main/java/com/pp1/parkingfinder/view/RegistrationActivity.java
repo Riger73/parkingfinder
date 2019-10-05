@@ -2,165 +2,181 @@ package com.pp1.parkingfinder.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.model.User;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+import static android.text.TextUtils.isEmpty;
+import static com.pp1.parkingfinder.util.Helper.doStringsMatch;
 
-    private EditText mEmail;
-    private EditText mPassword;
-    private EditText cnfPassword;
-    private EditText mFirstname;
-    private EditText mLastname;
-    private EditText mRego;
-    private ProgressBar progressBar;
 
-    private FirebaseAuth mAuth;
+public class RegistrationActivity extends AppCompatActivity implements
+        View.OnClickListener {
+    private static final String TAG = "RegisterActivity";
+
+    //widgets
+    private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
+    private ProgressBar mProgressBar;
+
+    //vars
+    private FirebaseFirestore mDb;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
-
-        mEmail = findViewById(R.id.edittext_email);
-        mPassword = findViewById(R.id.edittext_password);
-        cnfPassword = findViewById(R.id.edittext_cnf_password);
-        mFirstname = findViewById(R.id.edittext_firstname);
-        mLastname = findViewById(R.id.edittext_lastname);
-        mRego = findViewById(R.id.edittext_rego);
-        progressBar = findViewById(R.id.progressbar);
-        progressBar.setVisibility(View.GONE);
-
-        mAuth = FirebaseAuth.getInstance();
+        mEmail = (EditText) findViewById(R.id.edittext_email);
+        mPassword = (EditText) findViewById(R.id.edittext_password);
+        mConfirmPassword = (EditText) findViewById(R.id.edittext_cnf_password);
+        mFirstname = (EditText) findViewById(R.id.edittext_firstname);
+        mLastname = (EditText) findViewById(R.id.edittext_lastname);
+        mRego = (EditText) findViewById(R.id.edittext_rego);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         findViewById(R.id.button_register).setOnClickListener(this);
+
+        mDb = FirebaseFirestore.getInstance();
+
+        hideSoftKeyboard();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    /**
+     * Register a new email and password to Firebase Authentication
+     *
+     * @param email
+     * @param password
+     */
+    public void registerNewEmail(final String email, String password) {
 
-        if (mAuth.getCurrentUser() != null) {
-            //handle the already login user
-        }
-    }
+        showDialog();
 
-    private void registerUser() {
-        final String email = mEmail.getText().toString().trim();
-        String password = mPassword.getText().toString().trim();
-        final String checkPassword = cnfPassword.getText().toString().trim();
-        final String firstname = mFirstname.getText().toString().trim();
-        final String lastname = mLastname.getText().toString().trim();
-        final String rego = mRego.getText().toString().trim();
-
-        if (email.isEmpty()) {
-            mEmail.setError(getString(R.string.input_error_email));
-            mEmail.requestFocus();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mEmail.setError(getString(R.string.input_error_email));
-            mEmail.requestFocus();
-            return;
-        }
-
-        if (password.isEmpty()) {
-            mPassword.setError(getString(R.string.input_error_password));
-            mPassword.requestFocus();
-            return;
-        }
-
-        if (password.length() < 6) {
-            mPassword.setError(getString(R.string.input_error_password_length));
-            mPassword.requestFocus();
-            return;
-        }
-
-        if (firstname.isEmpty()) {
-            mFirstname.setError(getString(R.string.input_error_name));
-            mFirstname.requestFocus();
-            return;
-        }
-
-        if (lastname.isEmpty()) {
-            mLastname.setError(getString(R.string.input_error_name));
-            mLastname.requestFocus();
-            return;
-        }
-
-        if (rego.isEmpty()) {
-            mRego.setError(getString(R.string.input_error_rego));
-            mRego.requestFocus();
-            return;
-        }
-
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: AuthState: "
+                                    + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                            User user = new User(
-                                    email,
-                                    firstname,
-                                    lastname,
-                                    rego
-                            );
+                            //insert some default data
+                            User user = new User();
+                            user.setEmail(email);
+                            user.setUsername(email.substring(0, email.indexOf("@")));
+                            user.setUser_id(FirebaseAuth.getInstance().getUid());
 
-                            FirebaseDatabase.getInstance().getReference("Customers")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            FirebaseFirestoreSettings settings =
+                                    new FirebaseFirestoreSettings.Builder()
+                                    .setTimestampsInSnapshotsEnabled(true)
+                                    .build();
+                            mDb.setFirestoreSettings(settings);
+
+                            DocumentReference newUserRef = mDb
+                                    .collection(getString(R.string.collection_users))
+                                    .document(FirebaseAuth.getInstance().getUid());
+
+                            newUserRef.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    progressBar.setVisibility(View.GONE);
+                                    hideDialog();
+
                                     if (task.isSuccessful()) {
-                                        Intent intRegistration = new Intent(
-                                                RegistrationActivity.this,
-                                                LoginActivity.class);
-                                        startActivity(intRegistration);
-                                        Toast.makeText(RegistrationActivity.this,
-                                                getString(R.string.registration_success),
-                                                Toast.LENGTH_LONG).show();
+                                        redirectLoginScreen();
                                     } else {
-                                        //display a failure message
+                                        View parentLayout = findViewById(android.R.id.content);
+                                        Snackbar.make(parentLayout, "Something went wrong.",
+                                                Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                             });
 
                         } else {
-                            Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            View parentLayout = findViewById(android.R.id.content);
+                            Snackbar.make(parentLayout, "Something went wrong.",
+                                    Snackbar.LENGTH_SHORT).show();
+                            hideDialog();
                         }
+
+                        // ...
                     }
                 });
+    }
+
+    /**
+     * Redirects the user to the login screen
+     */
+    private void redirectLoginScreen() {
+        Log.d(TAG, "redirectLoginScreen: redirecting to login screen.");
+
+        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void showDialog() {
+        mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
+    private void hideDialog() {
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideSoftKeyboard() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_register:
-                registerUser();
-                Intent intent = new Intent(RegistrationActivity.this,
-                        LoginActivity.class);
-                startActivity(intent);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_register: {
+                Log.d(TAG, "onClick: attempting to register.");
+
+                //check for null valued EditText fields
+                if (!isEmpty(mEmail.getText().toString())
+                        && !isEmpty(mPassword.getText().toString())
+                        && !isEmpty(mConfirmPassword.getText().toString())) {
+
+                    //check if passwords match
+                    if (doStringsMatch(mPassword.getText().toString(),
+                            mConfirmPassword.getText().toString())) {
+
+                        //Initiate registration task
+                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString());
+                    } else {
+                        Toast.makeText(RegistrationActivity.this,
+                                "Passwords do not Match", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(RegistrationActivity.this,
+                            "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                }
                 break;
+            }
         }
     }
 }

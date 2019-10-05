@@ -65,10 +65,6 @@
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name="com.pp1.parkingfinder.view.ListingActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity
             android:name="com.pp1.parkingfinder.view.BookingActivity"
             android:label="@string/app_name">
         </activity>
