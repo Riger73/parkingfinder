@@ -1,6 +1,6 @@
 package com.pp1.parkingfinder.model.data;
 
-import com.pp1.parkingfinder.model.Customer;
+import com.pp1.parkingfinder.model.User;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 
 public interface IEndpoint_Customer {
     @POST("/signup")
-    Call<ResponseBody> createCustomer(@Body Customer customer);
+    Call<ResponseBody> createCustomer(@Body User user);
 
     @FormUrlEncoded
     @POST("/signup")

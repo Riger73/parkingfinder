@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.model.Customer;
+import com.pp1.parkingfinder.model.User;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -117,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         if (task.isSuccessful()) {
 
-                            Customer customer = new Customer(
+                            User user = new User(
                                     email,
                                     firstname,
                                     lastname,
@@ -126,7 +126,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                             FirebaseDatabase.getInstance().getReference("Customers")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     progressBar.setVisibility(View.GONE);
@@ -157,6 +157,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.button_register:
                 registerUser();
+                Intent intent = new Intent(RegistrationActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
                 break;
         }
     }

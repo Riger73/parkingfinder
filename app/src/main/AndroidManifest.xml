@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pp1.parkingfinder">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -17,6 +12,7 @@
         android:required="true"/>
 
     <application
+        android:name=".UserClient"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -47,10 +43,10 @@
         <activity
             android:name="com.pp1.parkingfinder.view.MapActivity"
             android:label="@string/title_activity_map">
+        </activity>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pp1.parkingfinder.view.MenuActivity" />
-        </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.LoginActivity"
             android:label="@string/app_name">
@@ -62,16 +58,20 @@
         </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.RegistrationActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name">
+        </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.MenuActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name">
+        </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.ListingActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name">
+        </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.BookingActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

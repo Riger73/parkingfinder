@@ -1,19 +1,17 @@
-package com.pp1.parkingfinder.util;
+package com.pp1.parkingfinder;
 
 import android.app.Application;
 
-import com.pp1.parkingfinder.model.Customer;
-import com.pp1.parkingfinder.model.Leaser;
 import com.pp1.parkingfinder.model.User;
+import com.pp1.parkingfinder.model.Leaser;
 
 public class UserClient extends Application {
 
-    private Customer customer = null;
+    private User user = null;
 
     private Leaser leaser = null;
 
     public User getUser() {
-        if
         return user;
     }
 

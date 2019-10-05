@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,134 +23,167 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.model.Customer;
+import com.pp1.parkingfinder.model.User;
+import com.pp1.parkingfinder.UserClient;
 
-/* Test */
+import static android.text.TextUtils.isEmpty;
 
-public class LoginActivity extends AppCompatActivity  implements
-        View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements
+        View.OnClickListener
+{
 
     private static final String TAG = "LoginActivity";
 
-    // Declare button and view widgets
-    EditText email, password;
-    Button btnSignIn;
-    TextView tvRegister;
-
-    // Declares Firebase listener variable
+    //Firebase
     private FirebaseAuth.AuthStateListener mAuthListener;
-    //FirebaseAuth mFirebaseAuth;
+
+    // widgets
+    private EditText mEmail, mPassword;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        mEmail = findViewById(R.id.editTextEmail);
+        mPassword = findViewById(R.id.editTextPassword);
+        mProgressBar = findViewById(R.id.progressbar);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        email = findViewById(R.id.editTextEmail);
-        password = findViewById(R.id.editTextPassword);
-        btnSignIn = findViewById(R.id.buttonLogin);
-        tvRegister = findViewById(R.id.textViewRegister);
+        setupFirebaseAuth();
+        findViewById(R.id.buttonLogin).setOnClickListener(this);
+        findViewById(R.id.textViewRegister).setOnClickListener(this);
+
+        hideSoftKeyboard();
+    }
+
+    private void showDialog(){
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    private void hideDialog(){
+        if(mProgressBar.getVisibility() == View.VISIBLE){
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    /*
+        ----------------------------- Firebase setup ---------------------------------
+     */
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: started.");
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+                FirebaseUser customer = firebaseAuth.getCurrentUser();
+                if (customer != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + customer.getUid());
+                    Toast.makeText(LoginActivity.this, "Authenticated with: "
+                            + customer.getEmail(), Toast.LENGTH_SHORT).show();
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = LoginActivity.this.email.getText().toString();
-                String pwd = password.getText().toString();
-                if (email.isEmpty()) {
-                    LoginActivity.this.email.setError("Please enter email id");
-                    LoginActivity.this.email.requestFocus();
-                } else if (pwd.isEmpty()) {
-                    password.setError("Please enter your password");
-                    password.requestFocus();
-                } else if (email.isEmpty() && pwd.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Fields Are Empty!", Toast.LENGTH_SHORT).show();
-                } else if (!(email.isEmpty() && pwd.isEmpty())) {
-                    mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                            .setTimestampsInSnapshotsEnabled(true)
+                            .build();
+                    db.setFirestoreSettings(settings);
+
+                    DocumentReference userRef =
+                            db.collection(getString(R.string.collection_customers))
+                            .document(customer.getUid());
+
+                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Login Error, Please Login Again", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Intent intToHome = new Intent(LoginActivity.this, MenuActivity.class);
-                                startActivity(intToHome);
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG, "onComplete: successfully set the user client.");
+                                User user = task.getResult().toObject(User.class);
+                                ((UserClient)(getApplicationContext())).setUser(user);
                             }
                         }
                     });
+
+                    Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+
                 } else {
-                    Toast.makeText(LoginActivity.this, "Error Occurred!", Toast.LENGTH_SHORT).show();
-
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-
+                // ...
             }
-        });
-
-        tvRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intSignUp = new Intent(LoginActivity.this, RegistrationActivity.class);
-                startActivity(intSignUp);
-            }
-        });
-
+        };
     }
-    private void setupFireBaseAuth() {
-            Log.d(TAG, "setupFireBaseAuth(): initiated.");
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-        // @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
-            FirebaseUser customer;
-            FirebaseUser leaser;
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+    }
 
-            if (user != null) {
-                Log.d(TAG, "onAuthStateChanged():signed_in: " + user.getUid());
-                Toast.makeText
-                        (LoginActivity.this, "Successful login as: "
-                                + user.getEmail(), Toast.LENGTH_SHORT).show();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseFirestoreSettings settings =
-                        new FirebaseFirestoreSettings.Builder()
-                                .build();
-                db.setFirestoreSettings(settings);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        }
+    }
 
-                DocumentReference userRef =
-                        db.collection(getString(R.string.collection_customers))
-                                .document(user.getUid());
+    private void signIn(){
+        //check if the fields are filled out
+        if(!isEmpty(mEmail.getText().toString())
+                && !isEmpty(mPassword.getText().toString())){
+            Log.d(TAG, "onClick: attempting to authenticate.");
 
-                userRef.get().addOnCompleteListener
-                        (new OnCompleteListner<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            Log.d(TAG, "onComplete(): successfully set user.");
-                            Customer customer = task.getResult().toObject(Customer.class);
-                            ((UserClient)(getApplicationContext())).setUser(customer);
+            showDialog();
+
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getText().toString(),
+                    mPassword.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            hideDialog();
+
                         }
-                    }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(LoginActivity.this, "Authentication Failed",
+                            Toast.LENGTH_SHORT).show();
+
+                    hideDialog();
                 }
-            }
+            });
+        }else{
+            Toast.makeText(LoginActivity.this, "You didn't fill in all the fields.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.textViewRegister:{
+                Intent intent = new Intent(LoginActivity.this,
+                        RegistrationActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.buttonLogin:{
+                signIn();
+                Intent intent = new Intent(LoginActivity.this,
+                        MenuActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
     }
 }
