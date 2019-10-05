@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     signIn();
                 } catch (Exception e) {
-                    Log.w(TAG, "Sign in failed", e);
+                    Log.w(TAG, "Sign has failed", e);
 
                 }
                 Intent intent = new Intent(LoginActivity.this,
