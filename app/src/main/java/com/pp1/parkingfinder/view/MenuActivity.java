@@ -47,7 +47,7 @@ public class MenuActivity extends AppCompatActivity implements
             }
             case R.id.makeRating: {
                 Intent intent = new Intent(MenuActivity.this,
-                        BookingActivity.class);
+                        RatingActivity.class);
                 startActivity(intent);
                 break;
             }
