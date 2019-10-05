@@ -31,7 +31,7 @@
 
     <!-- Firestore Strings -->
     <string name="collection_leasers">Leasers</string>
-    <string name="collection_customers">Customers</string>
+    <string name="collection_users">Customers</string>
     <string name="collection_rego">Registration</string>
     <string name="collection_parking_listings">Listings</string>
 </resources>

@@ -80,11 +80,10 @@ public class LoginActivity extends AppCompatActivity implements
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser customer = firebaseAuth.getCurrentUser();
-                if (customer != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + customer.getUid());
-                    Toast.makeText(LoginActivity.this, "Authenticated with: "
-                            + customer.getEmail(), Toast.LENGTH_SHORT).show();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -92,9 +91,8 @@ public class LoginActivity extends AppCompatActivity implements
                             .build();
                     db.setFirestoreSettings(settings);
 
-                    DocumentReference userRef =
-                            db.collection(getString(R.string.collection_customers))
-                            .document(customer.getUid());
+                    DocumentReference userRef = db.collection(getString(R.string.collection_users))
+                            .document(user.getUid());
 
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -155,18 +153,14 @@ public class LoginActivity extends AppCompatActivity implements
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(LoginActivity.this, "Authentication Failed",
-                            Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     hideDialog();
                 }
             });
         }else{
-            Toast.makeText(LoginActivity.this, "You didn't fill in all the fields.",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
