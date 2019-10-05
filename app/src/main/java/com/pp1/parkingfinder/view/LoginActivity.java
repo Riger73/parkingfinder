@@ -56,11 +56,13 @@ public class LoginActivity extends AppCompatActivity implements
         hideSoftKeyboard();
     }
 
+    // Shows signin prgress icon
     private void showDialog(){
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
+    // Hides signin prgress icon
     private void hideDialog(){
         if(mProgressBar.getVisibility() == View.VISIBLE){
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -71,9 +73,7 @@ public class LoginActivity extends AppCompatActivity implements
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    /*
-        ----------------------------- Firebase setup ---------------------------------
-     */
+    // Implements firebase authentication
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: started.");
 
@@ -83,7 +83,8 @@ public class LoginActivity extends AppCompatActivity implements
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Authenticated with: "
+                            + user.getEmail(), Toast.LENGTH_SHORT).show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -121,6 +122,8 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onStart() {
+
+
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
     }
@@ -138,9 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
         if(!isEmpty(mEmail.getText().toString())
                 && !isEmpty(mPassword.getText().toString())){
             Log.d(TAG, "onClick: attempting to authenticate.");
-
             showDialog();
-
             FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getText().toString(),
                     mPassword.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -175,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     signIn();
                 } catch (Exception e) {
-                    Log.w(TAG, "Sign has failed", e);
+                    Log.w(TAG, "Signin has failed", e);
 
                 }
                 Intent intent = new Intent(LoginActivity.this,
