@@ -52,11 +52,14 @@ public class RegistrationActivity extends AppCompatActivity implements
         mRego = (EditText) findViewById(R.id.edittext_rego);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
 
+        // Action on button click - Calls button lister on object
         findViewById(R.id.button_register).setOnClickListener(this);
+        findViewById(R.id.textview_login).setOnClickListener(this);
 
         mDb = FirebaseFirestore.getInstance();
 
         hideSoftKeyboard();
+
     }
 
     /**
@@ -166,6 +169,8 @@ public class RegistrationActivity extends AppCompatActivity implements
             case R.id.button_register: {
                 Log.d(TAG, "onClick: attempting to register.");
 
+                showDialog();
+
                 //check for null valued EditText fields
                 if (!isEmpty(mEmail.getText().toString())
                         && !isEmpty(mPassword.getText().toString())
@@ -189,6 +194,15 @@ public class RegistrationActivity extends AppCompatActivity implements
                             "You must fill out all the fields", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            }
+            case R.id.textview_login: {
+                Log.d(TAG, "onClick: returning to login.");
+
+                showDialog();
+                Intent intent = new Intent(RegistrationActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+
             }
         }
     }
