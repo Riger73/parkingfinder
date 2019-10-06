@@ -1,23 +1,15 @@
 package com.pp1.parkingfinder.util;
 
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 /*
 Creates thread to handle Geocodingconversion of address input into lat:lon coordinates.
  */
-    public class GeocodingLocation {
+public class GeocodingLocation {
 
     private static final String TAG = "GeocodingLocation";
 
-    public static void getAddressFromLocation(final String locationAddress,
+}
+
+/*    public static void getAddressFromLocation(final String locationAddress,
                                               final Context context, final Handler handler) {
         Thread thread = new Thread() {
             @Override
@@ -61,3 +53,4 @@ Creates thread to handle Geocodingconversion of address input into lat:lon coord
         thread.start();
     }
 }
+*/

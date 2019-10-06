@@ -23,11 +23,18 @@
     <string name="input_error_rego">Please enter a valid vehicle registration</string>
     <string name="registration_success">Registration Successful!</string>
     <string name="BookingDate">booking date</string>
-    <string name="description">Description</string>
     <string name="address">Address</string>
     <string name="leaser">Leaser</string>
     <string name="title_activity_map">Map</string>
+    <string name="search">Search Parking Listings</string>
     <string name="google_maps_api_key">AIzaSyCmKBH-rB0ZT4bISv_KwqGJkBfwvCPTktk</string>
+
+
+    <!-- Intent extras -->
+    <string name="intent_parking_listings">intent_listings</string>
+    <string name="intent_location_list">intent_location_list</string>
+    <string name="intent_user_locations">intent_user_locations</string>
+    <string name="intent_location">intent_location</string>
 
     <!-- Firestore Strings -->
     <string name="collection_leasers">Leasers</string>
@@ -35,4 +42,5 @@
     <string name="collection_rego">Registration</string>
     <string name="collection_parking_listings">Listings</string>
     <string name="customer">customer</string>
+    <string name="location">Location</string>
 </resources>

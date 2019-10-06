@@ -181,9 +181,21 @@ public class MenuActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.listLeases: {
-                Intent intent = new Intent(MenuActivity.this,
-                        SearchListingFragment.class);
-                startActivity(intent);
+                // Calls Google services permissions checks
+                if(checkMapServices()) {
+                    if(mLocationPermissionGranted) {
+                        Intent intent = new Intent(MenuActivity.this,
+                                SearchListingActivity.class);
+                        startActivity(intent);
+                    } else {
+                        getLocationPermission();
+                    }
+                } else {
+                    Intent intent = new Intent(MenuActivity.this,
+                            SearchListingActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
             }
             case R.id.makeRating: {
@@ -193,9 +205,20 @@ public class MenuActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.listBooking: {
-                Intent intent = new Intent(MenuActivity.this,
-                        ManageBookingsFragment.class);
-                startActivity(intent);
+                // Calls Google services permissions checks
+                if(checkMapServices()) {
+                    if(mLocationPermissionGranted) {
+                        Intent intent = new Intent(MenuActivity.this,
+                                BookingActivity.class);
+                        startActivity(intent);
+                    } else {
+                        getLocationPermission();
+                    }
+                } else {
+                    Intent intent = new Intent(MenuActivity.this,
+                            BookingActivity.class);
+                    startActivity(intent);
+                }
                 break;
             }
             case R.id.button_logout: {
