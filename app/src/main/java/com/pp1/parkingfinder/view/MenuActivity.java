@@ -185,14 +185,14 @@ public class MenuActivity extends AppCompatActivity implements
                 if(checkMapServices()) {
                     if(mLocationPermissionGranted) {
                         Intent intent = new Intent(MenuActivity.this,
-                                SearchListingFragment.class);
+                                SearchListingActivity.class);
                         startActivity(intent);
                     } else {
                         getLocationPermission();
                     }
                 } else {
                     Intent intent = new Intent(MenuActivity.this,
-                            SearchListingFragment.class);
+                            SearchListingActivity.class);
                     startActivity(intent);
                 }
 
@@ -209,14 +209,14 @@ public class MenuActivity extends AppCompatActivity implements
                 if(checkMapServices()) {
                     if(mLocationPermissionGranted) {
                         Intent intent = new Intent(MenuActivity.this,
-                                ManageBookingsFragment.class);
+                                BookingActivity.class);
                         startActivity(intent);
                     } else {
                         getLocationPermission();
                     }
                 } else {
                     Intent intent = new Intent(MenuActivity.this,
-                            ManageBookingsFragment.class);
+                            BookingActivity.class);
                     startActivity(intent);
                 }
                 break;

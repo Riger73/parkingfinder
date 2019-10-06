@@ -26,6 +26,7 @@
     <string name="address">Address</string>
     <string name="leaser">Leaser</string>
     <string name="title_activity_map">Map</string>
+    <string name="search">Search Parking Listings</string>
     <string name="google_maps_api_key">AIzaSyCmKBH-rB0ZT4bISv_KwqGJkBfwvCPTktk</string>
 
 
@@ -41,4 +42,5 @@
     <string name="collection_rego">Registration</string>
     <string name="collection_parking_listings">Listings</string>
     <string name="customer">customer</string>
+    <string name="location">Location</string>
 </resources>
