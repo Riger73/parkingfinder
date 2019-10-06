@@ -106,11 +106,11 @@ public class Leaser implements Parcelable {
     public String toString() {
         return "Leasers{" +
                 "email='" + email + '\'' +
-                ", user_id='" + leaser_id + '\'' +
+                ", leaser_id='" + leaser_id + '\'' +
                 ", username='" + username + '\'' +
-                ", avatar='" + firstname + '\'' +
-                ", avatar='" + lastname + '\'' +
-                ", avatar='" + carpark + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", carpark='" + carpark + '\'' +
                 '}';
     }
 
@@ -127,4 +127,5 @@ public class Leaser implements Parcelable {
         dest.writeDouble(carpark.getLatitude());
         dest.writeDouble(carpark.getLongitude());
     }
+
 }

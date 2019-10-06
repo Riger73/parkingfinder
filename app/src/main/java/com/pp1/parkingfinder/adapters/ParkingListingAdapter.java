@@ -9,17 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.model.Listing;
+import com.pp1.parkingfinder.model.Leaser;
 
 import java.util.ArrayList;
 
-public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>{
+public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAdapter.ViewHolder>{
 
-    private ArrayList<Listing> mListings = new ArrayList<>();
+    private ArrayList<Leaser> mListings = new ArrayList<>();
 
 
-    public LocationRecyclerAdapter(ArrayList<Listing> users) {
-        this.mListings = users;
+    public ParkingListingAdapter(ArrayList<Leaser> listings) {
+        this.mListings = listings;
     }
 
     @NonNull
@@ -36,7 +36,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ((ViewHolder)holder).username.setText(mListings.get(position).getUsername());
-        ((ViewHolder)holder).address.setText(mListings.get(position).getAddress());
+        //((ViewHolder)holder).carpark.settext(mListings.get(position).getCarpark().toString(getLatitude()));
     }
 
     @Override
@@ -46,12 +46,12 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView username, address;
+        TextView username, carpark;
 
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.location_list_recycler_view);
-            address = itemView.findViewById(R.id.location_list_recycler_view);
+            carpark = itemView.findViewById(R.id.location_list_recycler_view);
         }
 
 

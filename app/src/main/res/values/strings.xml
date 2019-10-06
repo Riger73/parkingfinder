@@ -43,4 +43,8 @@
     <string name="collection_parking_listings">Listings</string>
     <string name="customer">customer</string>
     <string name="location">Location</string>
+    <string name="no_address_found">No known address</string>
+    <string name="address_found">Address found</string>
+    <string name="invalid_lat_long_used">Latitude is invalid</string>
+    <string name="service_not_available">invalid service request</string>
 </resources>
