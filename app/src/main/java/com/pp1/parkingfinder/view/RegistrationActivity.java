@@ -30,7 +30,7 @@ import static com.pp1.parkingfinder.util.Helper.doStringsMatch;
 
 public class RegistrationActivity extends AppCompatActivity implements
         View.OnClickListener {
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "RegistrationActivity";
 
     //widgets
     private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
@@ -38,7 +38,6 @@ public class RegistrationActivity extends AppCompatActivity implements
 
     //vars
     private FirebaseFirestore mDb;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +60,7 @@ public class RegistrationActivity extends AppCompatActivity implements
         hideSoftKeyboard();
 
     }
-
-    /**
+     /*
      * Register a new email and password to Firebase Authentication
      *
      * @param email
