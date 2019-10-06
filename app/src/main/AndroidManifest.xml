@@ -68,6 +68,14 @@
             android:name="com.pp1.parkingfinder.view.BookingActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name="com.pp1.parkingfinder.view.SearchListingFragment"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name="com.pp1.parkingfinder.view.RatingActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

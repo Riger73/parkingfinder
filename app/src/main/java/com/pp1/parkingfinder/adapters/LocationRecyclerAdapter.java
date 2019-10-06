@@ -36,7 +36,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ((ViewHolder)holder).username.setText(mListings.get(position).getUsername());
-        ((ViewHolder)holder).carpark.setText(mListings.get(position).getAddress());
+        ((ViewHolder)holder).address.setText(mListings.get(position).getAddress());
     }
 
     @Override
@@ -46,12 +46,12 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView username, carpark;
+        TextView username, address;
 
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.location_list_recycler_view);
-            carpark = itemView.findViewById(R.id.location_list_recycler_view);
+            address = itemView.findViewById(R.id.location_list_recycler_view);
         }
 
 
