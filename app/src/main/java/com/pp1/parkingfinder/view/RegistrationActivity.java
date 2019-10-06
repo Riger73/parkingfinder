@@ -31,7 +31,7 @@ import static com.pp1.parkingfinder.util.Helper.doStringsMatch;
 
 public class RegistrationActivity extends AppCompatActivity implements
         View.OnClickListener {
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "RegistrationActivity";
 
     //widgets
     private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
@@ -40,6 +40,7 @@ public class RegistrationActivity extends AppCompatActivity implements
 
     //vars
     private FirebaseFirestore mDb;
+
 
     //Field
     EditText editText;
@@ -56,24 +57,35 @@ public class RegistrationActivity extends AppCompatActivity implements
         mRego = (EditText) findViewById(R.id.edittext_rego);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
 
+
         editText = findViewById(R.id.edittext_address);
         editText.setVisibility(View.INVISIBLE);
 
 
+        // Action on button click - Calls button lister on object
         findViewById(R.id.button_register).setOnClickListener(this);
+        findViewById(R.id.textview_login).setOnClickListener(this);
 
         mDb = FirebaseFirestore.getInstance();
 
         hideSoftKeyboard();
-    }
 
-    /**
+    }
+     /*
      * Register a new email and password to Firebase Authentication
      *
      * @param email
      * @param password
+     * @param firstname
+     * @param lastname
+     * @param rego
+     *
      */
-    public void registerNewEmail(final String email, String password) {
+    public void registerNewEmail(final String email, String password, String firstname,
+                                 String lastname, String rego) {
+        final String eFirstname = firstname;
+        final String eLastname = lastname;
+        final String eRego = rego;
 
         showDialog();
 
@@ -86,12 +98,15 @@ public class RegistrationActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: AuthState: "
                                     + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
+                            String firstname = eFirstname;
                             //insert some default data
                             User user = new User();
                             user.setEmail(email);
                             user.setUsername(email.substring(0, email.indexOf("@")));
                             user.setUser_id(FirebaseAuth.getInstance().getUid());
+                            user.setFirstname(firstname);
+                            user.setLastname(eLastname);
+                            user.setRego(eRego);
 
                             FirebaseFirestoreSettings settings =
                                     new FirebaseFirestoreSettings.Builder()
@@ -177,6 +192,8 @@ public class RegistrationActivity extends AppCompatActivity implements
             case R.id.button_register: {
                 Log.d(TAG, "onClick: attempting to register.");
 
+                showDialog();
+
                 //check for null valued EditText fields
                 if (!isEmpty(mEmail.getText().toString())
                         && !isEmpty(mPassword.getText().toString())
@@ -187,7 +204,9 @@ public class RegistrationActivity extends AppCompatActivity implements
                             mConfirmPassword.getText().toString())) {
 
                         //Initiate registration task
-                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString());
+                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString(),
+                                mFirstname.getText().toString(), mLastname.getText().toString(),
+                                mRego.getText().toString());
                     } else {
                         Toast.makeText(RegistrationActivity.this,
                                 "Passwords do not Match", Toast.LENGTH_SHORT).show();
@@ -198,6 +217,15 @@ public class RegistrationActivity extends AppCompatActivity implements
                             "You must fill out all the fields", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            }
+            case R.id.textview_login: {
+                Log.d(TAG, "onClick: returning to login.");
+
+                showDialog();
+                Intent intent = new Intent(RegistrationActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+
             }
         }
     }
