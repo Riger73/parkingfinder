@@ -68,6 +68,24 @@
         android:background="#ffffff"
         android:hint="@string/rego" />
 
+    <EditText
+        android:id="@+id/edittext_address"
+        android:layout_width="206dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:hint="@string/address" />
+
+    <ToggleButton
+        android:id="@+id/button_toggle"
+        android:layout_width="206dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:textOn="Lessor"
+        android:textOff="Lessee"
+        android:layout_gravity="center_horizontal"
+        android:onClick="changeRegisterState"/>
+
     <Button
         android:id="@+id/button_register"
         android:layout_width="206dp"
