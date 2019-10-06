@@ -47,8 +47,8 @@ public class BookingActivity extends AppCompatActivity {
         Retrofit retrofit = retrofitBuilder.build();
         bookingApi = retrofit.create(IEndpoint_Booking.class);
 
-        //Listing listing =
-        //        new Listing(owner, contact, parkingspotID, description, latitude, longitude);
+        //Leaser listing =
+        //        new Leaser(owner, contact, parkingspotID, description, latitude, longitude);
         Call<ResponseBody> callableResponse = bookingApi.createBooking(booking);
         //dumpCallableResponse(callableResponse);
     }
