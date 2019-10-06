@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,10 +36,13 @@ public class RegistrationActivity extends AppCompatActivity implements
     //widgets
     private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
     private ProgressBar mProgressBar;
+    private boolean isLeaser = false;
 
     //vars
     private FirebaseFirestore mDb;
 
+    //Field
+    EditText editText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +55,10 @@ public class RegistrationActivity extends AppCompatActivity implements
         mLastname = (EditText) findViewById(R.id.edittext_lastname);
         mRego = (EditText) findViewById(R.id.edittext_rego);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+
+        editText = findViewById(R.id.edittext_address);
+        editText.setVisibility(View.INVISIBLE);
+
 
         findViewById(R.id.button_register).setOnClickListener(this);
 
@@ -149,8 +157,22 @@ public class RegistrationActivity extends AppCompatActivity implements
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    public void changeRegisterState(View view)
+    {
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked)
+        {
+            editText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            editText.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.button_register: {
                 Log.d(TAG, "onClick: attempting to register.");
