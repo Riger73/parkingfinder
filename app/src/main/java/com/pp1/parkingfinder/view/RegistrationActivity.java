@@ -34,16 +34,14 @@ public class RegistrationActivity extends AppCompatActivity implements
     private static final String TAG = "RegistrationActivity";
 
     //widgets
-    private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
+    private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword, mAddress;
     private ProgressBar mProgressBar;
-    private boolean isLeaser = false;
 
     //vars
     private FirebaseFirestore mDb;
 
-
-    //Field
-    EditText editText;
+    //Variable
+    private boolean isLeaser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,14 +53,13 @@ public class RegistrationActivity extends AppCompatActivity implements
         mFirstname = (EditText) findViewById(R.id.edittext_firstname);
         mLastname = (EditText) findViewById(R.id.edittext_lastname);
         mRego = (EditText) findViewById(R.id.edittext_rego);
+        mAddress = (EditText) findViewById(R.id.edittext_address);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
 
-
-        editText = findViewById(R.id.edittext_address);
-        editText.setVisibility(View.INVISIBLE);
-
+        mAddress.setVisibility(View.INVISIBLE);
 
         // Action on button click - Calls button lister on object
+        findViewById(R.id.button_toggle).setOnClickListener(this);
         findViewById(R.id.button_register).setOnClickListener(this);
         findViewById(R.id.textview_login).setOnClickListener(this);
 
@@ -177,11 +174,11 @@ public class RegistrationActivity extends AppCompatActivity implements
         boolean checked = ((ToggleButton)view).isChecked();
         if(checked)
         {
-            editText.setVisibility(View.VISIBLE);
+            mAddress.setVisibility(View.VISIBLE);
         }
         else
         {
-            editText.setVisibility(View.INVISIBLE);
+            mAddress.setVisibility(View.INVISIBLE);
         }
     }
 
