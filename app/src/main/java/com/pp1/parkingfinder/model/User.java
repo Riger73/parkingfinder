@@ -63,6 +63,7 @@ public class User implements Parcelable{
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public String getRego() {
         return rego;
     }

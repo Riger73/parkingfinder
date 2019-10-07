@@ -3,30 +3,39 @@ package com.pp1.parkingfinder.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Leaser extends User {
-    private String email, firstname, lastname, parkAddress, leaserId;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
+
+public class Leaser implements Parcelable {
+
+    private String email;
+    private String username;
+    private String leaser_id;
+    private String firstname;
+    private String lastname;
+    private GeoPoint carpark = null;
+
+    public Leaser(String email, String leaser_id, String username, String firstname, String lastname,
+                  GeoPoint carpark) {
+        this.email = email;
+        this.leaser_id = leaser_id;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.carpark = carpark;
+    }
 
     public Leaser() {
 
     }
 
-    public Leaser
-            (String email, String firstname, String lastname, String parkAddress, String leaserId) {
-
-        this.leaserId = leaserId;
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.parkAddress = parkAddress;
-    }
-
     protected Leaser(Parcel in) {
-
-        leaserId = in.readString();
         email = in.readString();
+        leaser_id = in.readString();
+        username = in.readString();
         firstname = in.readString();
         lastname = in.readString();
-        parkAddress = in.readString();
+        carpark = in.readParcelable(LatLng.class.getClassLoader());;
     }
 
     public static final Parcelable.Creator<Leaser> CREATOR = new Parcelable.Creator<Leaser>() {
@@ -41,44 +50,82 @@ public class Leaser extends User {
         }
     };
 
-    public void setUsername(String username) {
-        this.email = username;
+    public String getFirstname() {
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String setParkAddree() {
-        return parkAddress = parkAddress;
-    }
-
-    public String getLeaserId() {
-        return leaserId;
-    }
-
-    public String getUsername() {
-        return email;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
     public String getLastname() {
         return lastname;
     }
 
-    public String getParkAddree() {
-        return parkAddress;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+    public GeoPoint getCarpark() {
+        return carpark;
     }
 
-    public String toString() {
-        return "email: " + email + ", firstname: " + firstname + ", lastname: " + lastname +
-                ", parkAddress: " + parkAddress;
+    public void setCarpark(GeoPoint carpark) {
+        this.carpark = carpark;
     }
+
+
+    public static Parcelable.Creator<Leaser> getCREATOR() {
+        return CREATOR;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLeaser_id() {
+        return leaser_id;
+    }
+
+    public void setLeaser_id(String leaser_id) {
+        this.leaser_id = leaser_id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "Leasers{" +
+                "email='" + email + '\'' +
+                ", leaser_id='" + leaser_id + '\'' +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", carpark='" + carpark + '\'' +
+                '}';
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(leaser_id);
+        dest.writeString(username);
+        dest.writeString(firstname);
+        dest.writeString(lastname);
+        dest.writeDouble(carpark.getLatitude());
+        dest.writeDouble(carpark.getLongitude());
+    }
+
 }
