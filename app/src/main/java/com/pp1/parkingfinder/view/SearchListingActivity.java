@@ -5,8 +5,9 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,18 +25,24 @@ import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.model.Leaser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "SearchLisitngActivity";
 
+    // Collection for ListView items
+    ArrayList<String> listings = new ArrayList<>();
+
+    ArrayAdapter arrayAdapter;
+
+    private static final String TAG = "SearchLisitngActivity";
     private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
     FirebaseAuth mAuth;
 
     private EditText editTextLocation;
-    private TextView listViewParkingListings;
+    private ListView listViewParkingListings;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference listingRef = db.collection("Leasers");
@@ -49,6 +56,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         editTextLocation = findViewById(R.id.editTextLocation);
         listViewParkingListings = findViewById(R.id.listViewParkingListings);
 
+        //loadParkingLisitngs();
         findViewById(R.id.btSearch).setOnClickListener(this);
 
     }
@@ -84,6 +92,10 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
+
+        //listings.add("Test listing");
+        listViewParkingListings.setAdapter(arrayAdapter);
 
         db.collection("Leasers")
                 .get()
@@ -91,22 +103,31 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
+
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
                                 Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                GeoPoint address = document.getGeoPoint("carpark");
                                 Leaser leaser = document.toObject(Leaser.class);
 
                                 String email = leaser.getEmail();
                                 String firstname = leaser.getFirstname();
 
-                                GeoPoint carpark = leaser.getCarpark();
-                                LatLng coordinates = new LatLng(carpark.getLatitude(), carpark.getLongitude());
-                                String address = getAddress(coordinates);
-                                listData += "\nLeaser: " + firstname + "\nCar spase for lease: "
-                                        + address + "\nContact details: " + email + "\n";
+                                Log.d(TAG, "Leaser String: " +  address);
+                                double lat, lon;
+                                lat = address.getLatitude();
+                                lon = address.getLongitude();
+                                LatLng coordinates = new LatLng(lat, lon);
+                                Log.d(TAG, "Leaser String: " +  coordinates);
+                                String carpark = getAddress(coordinates);
+                                listData += "\nLeaser: " + firstname + "\nCar space for lease: "
+                                        + carpark + "\nContact details: " + email + "\n";
+                                //Log.d(TAG, "Leaser String: " +  listData);
                             }
-                            listViewParkingListings.setText(listData);
+                            listings.add(listData);
+                            arrayAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
