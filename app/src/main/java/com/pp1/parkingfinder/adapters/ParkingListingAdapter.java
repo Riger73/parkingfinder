@@ -8,6 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.model.Leaser;
 
@@ -16,7 +20,6 @@ import java.util.ArrayList;
 public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAdapter.ViewHolder>{
 
     private ArrayList<Leaser> mListings = new ArrayList<>();
-
 
     public ParkingListingAdapter(ArrayList<Leaser> listings) {
         this.mListings = listings;
@@ -37,6 +40,29 @@ public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAd
 
         ((ViewHolder)holder).username.setText(mListings.get(position).getUsername());
         //((ViewHolder)holder).carpark.settext(mListings.get(position).getCarpark().toString(getLatitude()));
+
+        FirebaseDatabase.getInstance().getReference().child("Leaser").child(String.valueOf(position)).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String carPark = dataSnapshot.child("carpark").getValue().toString();
+                        String userEmail = dataSnapshot.child("email").getValue().toString();
+                        String leaserID = dataSnapshot.child("leaser_id").getValue().toString();
+
+
+                        //SET TEXT TO VIEW
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+
+                }
+        );
     }
 
     @Override
