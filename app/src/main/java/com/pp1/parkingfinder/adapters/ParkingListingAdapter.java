@@ -36,9 +36,9 @@ public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        ((ViewHolder)holder).username.setText(mListings.get(position).getUsername());
+        //((ViewHolder)holder).username.setText(mListings.get(position).getUsername());
         //((ViewHolder)holder).carpark.settext(mListings.get(position).getCarpark().toString(getLatitude()));
 
         FirebaseDatabase.getInstance().getReference().child("Leaser").child(String.valueOf(position)).addValueEventListener(
@@ -51,7 +51,9 @@ public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAd
 
 
                         //SET TEXT TO VIEW
-
+                        ((ViewHolder)holder).carpark.setText(carPark);
+                        ((ViewHolder)holder).username.setText(leaserID);
+                        ((ViewHolder)holder).email.setText(userEmail);
 
                     }
 
@@ -59,10 +61,9 @@ public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAd
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-
-
                 }
         );
+
     }
 
     @Override
@@ -72,11 +73,12 @@ public class ParkingListingAdapter extends RecyclerView.Adapter<ParkingListingAd
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView username, carpark;
+        TextView username, carpark, email;
 
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.location_list_recycler_view);
+            email = itemView.findViewById(R.id.location_list_recycler_view);
             carpark = itemView.findViewById(R.id.location_list_recycler_view);
         }
 
