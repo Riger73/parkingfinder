@@ -57,7 +57,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         listViewParkingListings = findViewById(R.id.listViewParkingListings);
 
         //loadParkingLisitngs();
-        findViewById(R.id.btSearch).setOnClickListener(this);
+        findViewById(R.id.btBook).setOnClickListener(this);
 
     }
 
@@ -137,7 +137,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btSearch:{
+            case R.id.btBook:{
                 loadParkingLisitngs();
                 break;
             }
