@@ -47,4 +47,6 @@
     <string name="address_found">Address found</string>
     <string name="invalid_lat_long_used">Latitude is invalid</string>
     <string name="service_not_available">invalid service request</string>
+    <string name="logout">Logout</string>
+    <string name="book">Book Selected Parking Space</string>
 </resources>

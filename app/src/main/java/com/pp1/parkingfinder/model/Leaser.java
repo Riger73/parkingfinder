@@ -2,6 +2,7 @@ package com.pp1.parkingfinder.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.DatePicker;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
@@ -14,6 +15,7 @@ public class Leaser implements Parcelable {
     private String firstname;
     private String lastname;
     private GeoPoint carpark = null;
+    private DatePicker availability;
 
     public Leaser(String email, String leaser_id, String username, String firstname, String lastname,
                   GeoPoint carpark) {
@@ -23,6 +25,7 @@ public class Leaser implements Parcelable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.carpark = carpark;
+        this.availability = availability;
     }
 
     public Leaser() {
