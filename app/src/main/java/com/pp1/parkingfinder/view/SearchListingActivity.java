@@ -12,7 +12,13 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
     // Collection for ListView items
     ArrayList<String> listings = new ArrayList<>();
@@ -42,22 +48,32 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     FirebaseAuth mAuth;
 
     private EditText editTextLocation;
+    private MapFragment mMapView;
     private ListView listViewParkingListings;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference listingRef = db.collection("Leasers");
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_listing_activity);
         mAuth = FirebaseAuth.getInstance();
+        mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
 
         editTextLocation = findViewById(R.id.editTextLocation);
         listViewParkingListings = findViewById(R.id.listViewParkingListings);
 
         //loadParkingLisitngs();
         findViewById(R.id.btBook).setOnClickListener(this);
+
+        loadParkingLisitngs();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
     }
 
@@ -76,6 +92,16 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         return parkingSpots;
     }
 
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng melbourne = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(melbourne).title("Marker in Melbourne"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(melbourne));
+    }
 
     @Override
     protected void onStart() {
@@ -138,7 +164,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btBook:{
-                loadParkingLisitngs();
+
                 break;
             }
         }
@@ -148,4 +174,5 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
 }
