@@ -51,8 +51,11 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     private MapFragment mMapView;
     private ListView listViewParkingListings;
 
+    // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference listingRef = db.collection("Leasers");
+
+    // Calls google maps
     private GoogleMap mMap;
 
     @Override
@@ -65,7 +68,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         editTextLocation = findViewById(R.id.editTextLocation);
         listViewParkingListings = findViewById(R.id.listViewParkingListings);
 
-        //loadParkingLisitngs();
+        // Waits for a button click action for booking button
         findViewById(R.id.btBook).setOnClickListener(this);
 
         loadParkingLisitngs();
@@ -77,6 +80,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    // Retrieves address information from lat long coordinates - ignore for now
     private String getAddress(LatLng coordinates) {
         String parkingSpots = "";
         Geocoder geocoder = new Geocoder(SearchListingActivity.this, Locale.getDefault());
@@ -108,7 +112,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         super.onStart();
 
         // If the user isn't logged in it will redirect to the login screen
-        //if (mAuth.getCurrentUser() == null) {
+        // if (mAuth.getCurrentUser() == null) {
         //    finish();
         //    startActivity(new Intent(this, LoginActivity.class));
         //}
@@ -129,17 +133,25 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-
+                            /* Todo -
+                                Task 1) Change "carpark" item into String type and not LatLng
+                            *   or Geopoint
+                            *   Task 2) Implement "availability" as a datetime field in the listing
+                            */
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
+                                // Todo - Make "address" a string deal with Geopoints later
+                                // implement address field in same way as email and firstname
                                 GeoPoint address = document.getGeoPoint("carpark");
                                 Leaser leaser = document.toObject(Leaser.class);
 
                                 String email = leaser.getEmail();
                                 String firstname = leaser.getFirstname();
+
+                                // Todo - implement "availability" as a datetime field from database
 
                                 Log.d(TAG, "Leaser String: " +  address);
                                 double lat, lon;
@@ -148,6 +160,9 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 LatLng coordinates = new LatLng(lat, lon);
                                 Log.d(TAG, "Leaser String: " +  coordinates);
                                 String carpark = getAddress(coordinates);
+
+                                // Lists and formats all data fields required
+                                // Todo - add String "carpark" address and Datestime for datbase
                                 listData += "\nLeaser: " + firstname + "\nCar space for lease: "
                                         + carpark + "\nContact details: " + email + "\n";
                                 //Log.d(TAG, "Leaser String: " +  listData);
@@ -161,13 +176,29 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                 });
     }
 
-    public void onClick(View view) {
+
+        public void onClick(View view) {
         switch (view.getId()){
             case R.id.btBook:{
 
                 break;
             }
         }
+    }
+
+    private void loadDatePickerSearch() {
+        /* Todo -
+         * Implement action for datepicker to search listing for specific datetime fields
+         *
+         * */
+
+    }
+
+    private void loadAddressSearch() {
+        /* Todo -
+         * Implement narrow down list output based on searched address
+         *
+         * */
     }
 
     @Override

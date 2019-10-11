@@ -7,6 +7,7 @@ import android.widget.DatePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
+// The fields need to match the fields in the datastore
 public class Leaser implements Parcelable {
 
     private String email;
