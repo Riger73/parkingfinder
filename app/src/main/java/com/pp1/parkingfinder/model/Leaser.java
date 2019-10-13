@@ -40,7 +40,7 @@ public class Leaser implements Parcelable {
         firstname = in.readString();
         lastname = in.readString();
         LatLng coordinates = new LatLng(carpark.getLatitude(), carpark.getLongitude());
-        carpark = in.readParcelable(GeoPoint.class.getClassLoader());;
+        carpark = in.readParcelable(GeoPoint.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Leaser> CREATOR = new Parcelable.Creator<Leaser>() {
@@ -104,6 +104,14 @@ public class Leaser implements Parcelable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public DatePicker getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(DatePicker availability) {
+        this.availability = availability;
     }
 
     @Override

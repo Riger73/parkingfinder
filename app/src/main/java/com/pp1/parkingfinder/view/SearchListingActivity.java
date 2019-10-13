@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +51,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     private EditText editTextLocation;
     private MapFragment mMapView;
     private ListView listViewParkingListings;
+    private DatePicker datePicker;
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -152,6 +154,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 String firstname = leaser.getFirstname();
 
                                 // Todo - implement "availability" as a datetime field from database
+                                DatePicker availability = leaser.getAvailability();
 
                                 Log.d(TAG, "Leaser String: " +  address);
                                 double lat, lon;
@@ -163,8 +166,11 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                                 // Lists and formats all data fields required
                                 // Todo - add String "carpark" address and Datestime for datbase
-                                listData += "\nLeaser: " + firstname + "\nCar space for lease: "
-                                        + carpark + "\nContact details: " + email + "\n";
+                                listData += "\nLeaser: " + firstname +
+                                            "\nCar space for lease: " + carpark +
+                                            "\nAvailability: " + availability +
+                                            "\nContact details: " + email +
+                                            "\n";
                                 //Log.d(TAG, "Leaser String: " +  listData);
                             }
                             listings.add(listData);
@@ -187,14 +193,66 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     }
 
     private void loadDatePickerSearch() {
-        /* Todo -
-         * Implement action for datepicker to search listing for specific datetime fields
-         *
-         * */
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
+
+        listViewParkingListings.setAdapter(arrayAdapter);
+
+        db.collection("Leasers")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            /* Todo -
+                                Task 1) Change "carpark" item into String type and not LatLng
+                            *   or Geopoint
+                            *   Task 2) Implement "availability" as a datetime field in the listing
+                            */
+                            String listData = "";
+                            for(QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Leaser leaser = document.toObject(Leaser.class);
+                                DatePicker availability = leaser.getAvailability();
+                                if (datePicker == availability)
+                                {
+                                    GeoPoint address = document.getGeoPoint("carpark");
+                                    String email = leaser.getEmail();
+                                    String firstname = leaser.getFirstname();
+
+                                    Log.d(TAG, "Leaser String: " + address);
+                                    double lat, lon;
+                                    lat = address.getLatitude();
+                                    lon = address.getLongitude();
+                                    LatLng coordinates = new LatLng(lat, lon);
+                                    Log.d(TAG, "Leaser String: " + coordinates);
+                                    String carpark = getAddress(coordinates);
+
+                                    // Lists and formats all data fields required
+                                    // Todo - add String "carpark" address and Datestime for datbase
+                                    listData += "\nLeaser: " + firstname +
+                                            "\nCar space for lease: " + carpark +
+                                            "\nAvailability: " + availability +
+                                            "\nContact details: " + email +
+                                            "\n";
+                                    //Log.d(TAG, "Leaser String: " +  listData);
+                                }
+                            }
+                            listings.add(listData);
+                            arrayAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        arrayAdapter.notifyDataSetChanged();
     }
 
     private void loadAddressSearch() {
+
         /* Todo -
          * Implement narrow down list output based on searched address
          *
