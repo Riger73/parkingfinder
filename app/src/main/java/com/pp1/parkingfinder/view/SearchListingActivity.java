@@ -217,6 +217,8 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Leaser leaser = document.toObject(Leaser.class);
                                 DatePicker availability = leaser.getAvailability();
+                                // If selected date = availability, get the info and put it into
+                                // the list
                                 if (datePicker == availability)
                                 {
                                     GeoPoint address = document.getGeoPoint("carpark");
