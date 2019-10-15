@@ -36,9 +36,7 @@ public class Leaser implements Parcelable {
         this.availability = availability;
     }
 
-    public Leaser() {
-
-    }
+    public Leaser() { }
 
     protected Leaser(Parcel in) {
         email = in.readString();
@@ -47,19 +45,15 @@ public class Leaser implements Parcelable {
         firstname = in.readString();
         lastname = in.readString();
         LatLng coordinates = new LatLng(carpark.getLatitude(), carpark.getLongitude());
-        carpark = in.readParcelable(GeoPoint.class.getClassLoader());;
+        carpark = in.readParcelable(GeoPoint.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Leaser> CREATOR = new Parcelable.Creator<Leaser>() {
         @Override
-        public Leaser createFromParcel(Parcel in) {
-            return new Leaser(in);
-        }
+        public Leaser createFromParcel(Parcel in) { return new Leaser(in); }
 
         @Override
-        public Leaser[] newArray(int size) {
-            return new Leaser[size];
-        }
+        public Leaser[] newArray(int size) { return new Leaser[size]; }
     };
 
     public String getFirstname() {
@@ -113,6 +107,7 @@ public class Leaser implements Parcelable {
         this.username = username;
     }
 
+
     public String getAddress() { return address; }
 
     public void setAddress(String address) { this.address = address; }
@@ -120,6 +115,7 @@ public class Leaser implements Parcelable {
     public Timestamp getAvailability() { return availability; }
 
     public void setAvailability(Timestamp availability) { this.availability = availability; }
+
 
     @Override
     public String toString() {

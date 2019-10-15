@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +53,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     private EditText editTextLocation;
     private MapFragment mMapView;
     private ListView listViewParkingListings;
+    private DatePicker datePicker;
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -156,6 +158,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                                 // Todo - implement "availability" as a datetime field from database
 
+
                                 Timestamp timeConvert = leaser.getAvailability();
                                 String availability = timestampToString(timeConvert);
 
@@ -169,9 +172,11 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                                 // Lists and formats all data fields required
                                 // Todo - add String "carpark" address and Datestime for datbase
+
                                 listData += "\nLeaser: " + firstname + "\nContact details: " + email +
                                         "\n" + "\nAddress: " + addressName + "\n" +
                                         "\nAvailability: " + availability + "\n";
+
                                 //Log.d(TAG, "Leaser String: " +  listData);
                             }
                             listings.add(listData);
@@ -194,14 +199,11 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     }
 
     private void loadDatePickerSearch() {
-        /* Todo -
-         * Implement action for datepicker to search listing for specific datetime fields
-         *
-         * */
-
+        //TO BE COMPLETED
     }
 
     private void loadAddressSearch() {
+
         /* Todo -
          * Implement narrow down list output based on searched address
          *
