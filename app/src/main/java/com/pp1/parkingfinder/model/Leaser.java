@@ -5,7 +5,10 @@ import android.os.Parcelable;
 import android.widget.DatePicker;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+
+import java.text.SimpleDateFormat;
 
 // The fields need to match the fields in the datastore
 public class Leaser implements Parcelable {
@@ -15,9 +18,13 @@ public class Leaser implements Parcelable {
     private String leaser_id;
     private String firstname;
     private String lastname;
-    private GeoPoint carpark = null;
-    private DatePicker availability;
+    private String address;
+    //private Timestamp date;
 
+    private GeoPoint carpark = null;
+    private Timestamp availability;
+
+    //ENTER ADDRESS STRING?
     public Leaser(String email, String leaser_id, String username, String firstname, String lastname,
                   GeoPoint carpark) {
         this.email = email;
@@ -105,6 +112,14 @@ public class Leaser implements Parcelable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getAddress() { return address; }
+
+    public void setAddress(String address) { this.address = address; }
+
+    public Timestamp getAvailability() { return availability; }
+
+    public void setAvailability(Timestamp availability) { this.availability = availability; }
 
     @Override
     public String toString() {
