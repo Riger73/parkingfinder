@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +32,7 @@ import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.model.Leaser;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -150,21 +152,26 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                                 String email = leaser.getEmail();
                                 String firstname = leaser.getFirstname();
+                                String addressName = leaser.getAddress();
 
                                 // Todo - implement "availability" as a datetime field from database
 
-                                Log.d(TAG, "Leaser String: " +  address);
-                                double lat, lon;
-                                lat = address.getLatitude();
-                                lon = address.getLongitude();
-                                LatLng coordinates = new LatLng(lat, lon);
-                                Log.d(TAG, "Leaser String: " +  coordinates);
-                                String carpark = getAddress(coordinates);
+                                Timestamp timeConvert = leaser.getAvailability();
+                                String availability = timestampToString(timeConvert);
+
+                                //Log.d(TAG, "Leaser String: " +  address);
+                                //double lat, lon;
+                                //lat = address.getLatitude();
+                                //lon = address.getLongitude();
+                                //LatLng coordinates = new LatLng(lat, lon);
+                                //Log.d(TAG, "Leaser String: " +  coordinates);
+                                //String carpark = getAddress(coordinates);
 
                                 // Lists and formats all data fields required
                                 // Todo - add String "carpark" address and Datestime for datbase
-                                listData += "\nLeaser: " + firstname + "\nCar space for lease: "
-                                        + carpark + "\nContact details: " + email + "\n";
+                                listData += "\nLeaser: " + firstname + "\nContact details: " + email +
+                                        "\n" + "\nAddress: " + addressName + "\n" +
+                                        "\nAvailability: " + availability + "\n";
                                 //Log.d(TAG, "Leaser String: " +  listData);
                             }
                             listings.add(listData);
@@ -203,6 +210,16 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public String timestampToString(Timestamp date)
+    {
+        String leaserDate;
+        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        leaserDate = sfd.format(date);
+
+        return leaserDate;
 
     }
 
