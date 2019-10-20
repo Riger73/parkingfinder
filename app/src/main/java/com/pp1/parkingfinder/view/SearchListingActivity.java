@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +36,8 @@ import com.pp1.parkingfinder.model.Leaser;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,6 +45,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     // Collection for ListView items
     ArrayList<String> listings = new ArrayList<>();
+    HashMap<String, LatLng> location = new HashMap<String, LatLng>();
 
     ArrayAdapter arrayAdapter;
 
@@ -84,31 +88,42 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    // Retrieves address information from lat long coordinates - ignore for now
-    private String getAddress(LatLng coordinates) {
-        String parkingSpots = "";
-        Geocoder geocoder = new Geocoder(SearchListingActivity.this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation
-                    (coordinates.latitude, coordinates.longitude, 1);
-            String address = addresses.get(0).getAddressLine(0);
-            parkingSpots = addresses.get(0).getPremises();
-
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        return parkingSpots;
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Add a marker in Sydney and move the camera
-        LatLng melbourne = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(melbourne).title("Marker in Melbourne"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(melbourne));
+        db.collection("Leasers")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+
+                            for(QueryDocumentSnapshot document : task.getResult()) {
+
+                                // Todo - retrieving geopoints
+                                GeoPoint gc = document.getGeoPoint("carpark");
+                                double lat = gc.getLatitude();
+                                double lng = gc.getLongitude ();
+                                LatLng latLng = new LatLng(lat, lng);
+                                String firstname = document.getString("firstname");
+
+                                mMap.addMarker(new MarkerOptions().position(latLng).title(firstname));
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng
+                                        (lat, lng)).zoom(15).build();
+
+                                mMap.animateCamera(CameraUpdateFactory
+                                        .newCameraPosition(cameraPosition));
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     @Override
@@ -128,7 +143,6 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
 
-        //listings.add("Test listing");
         listViewParkingListings.setAdapter(arrayAdapter);
 
         db.collection("Leasers")
@@ -148,34 +162,35 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 // Todo - Make "address" a string deal with Geopoints later
-                                // implement address field in same way as email and firstname
-                                GeoPoint address = document.getGeoPoint("carpark");
-                                Leaser leaser = document.toObject(Leaser.class);
 
-                                String email = leaser.getEmail();
-                                String firstname = leaser.getFirstname();
-                                String addressName = leaser.getAddress();
+                                String email = document.getString("email");
+                                String firstname = document.getString("firstname");
+                                String addressName = document.getString("address");
 
                                 // Todo - implement "availability" as a datetime field from database
 
+                                Timestamp ts = document.getTimestamp("availability");
+                                long seconds = ts.getSeconds();
+                                int nanoSeconds = ts.getNanoseconds();
 
-                                Timestamp timeConvert = leaser.getAvailability();
-                                String availability = timestampToString(timeConvert);
+                                Timestamp time = new Timestamp(seconds, nanoSeconds);
+                                String availability = timestampToString(time.getSeconds());
 
-                                //Log.d(TAG, "Leaser String: " +  address);
-                                //double lat, lon;
-                                //lat = address.getLatitude();
-                                //lon = address.getLongitude();
-                                //LatLng coordinates = new LatLng(lat, lon);
-                                //Log.d(TAG, "Leaser String: " +  coordinates);
-                                //String carpark = getAddress(coordinates);
+                                // Todo - retrieving geopoints
+                                GeoPoint gc = document.getGeoPoint("carpark");
+                                double lat = gc.getLatitude();
+                                double lng = gc.getLongitude ();
+                                LatLng latLng = new LatLng(lat, lng);
+
+                                location.put(firstname, latLng);
 
                                 // Lists and formats all data fields required
                                 // Todo - add String "carpark" address and Datestime for datbase
 
                                 listData += "\nLeaser: " + firstname + "\nContact details: " + email +
                                         "\n" + "\nAddress: " + addressName + "\n" +
-                                        "\nAvailability: " + availability + "\n";
+                                        "\nAvailability: " + availability + "\n" +
+                                        "\nGeoPoint: " + latLng + "\n";
 
                                 //Log.d(TAG, "Leaser String: " +  listData);
                             }
@@ -204,10 +219,6 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     private void loadAddressSearch() {
 
-        /* Todo -
-         * Implement narrow down list output based on searched address
-         *
-         * */
     }
 
     @Override
@@ -215,11 +226,12 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    public String timestampToString(Timestamp date)
+    public String timestampToString(Long date)
     {
         String leaserDate;
+
         SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        leaserDate = sfd.format(date);
+        leaserDate = sfd.format(new Date(date*1000));
 
         return leaserDate;
 
