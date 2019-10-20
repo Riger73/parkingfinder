@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 
 // The fields need to match the fields in the datastore
@@ -21,8 +22,8 @@ public class Leaser implements Parcelable {
     private String address;
     //private Timestamp date;
 
-    private GeoPoint carpark = null;
-    private Timestamp availability;
+    private GeoPoint carpark;
+    private String availability;
 
     //ENTER ADDRESS STRING?
     public Leaser(String email, String leaser_id, String username, String firstname, String lastname,
@@ -46,6 +47,9 @@ public class Leaser implements Parcelable {
         lastname = in.readString();
         LatLng coordinates = new LatLng(carpark.getLatitude(), carpark.getLongitude());
         carpark = in.readParcelable(GeoPoint.class.getClassLoader());
+        availability = in.readString();
+        //Timestamp timestamp = new Timestamp(availability.getSeconds(), availability.getNanoseconds());
+        //availability = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Leaser> CREATOR = new Parcelable.Creator<Leaser>() {
@@ -112,9 +116,9 @@ public class Leaser implements Parcelable {
 
     public void setAddress(String address) { this.address = address; }
 
-    public Timestamp getAvailability() { return availability; }
+    public String getAvailability() { return availability; }
 
-    public void setAvailability(Timestamp availability) { this.availability = availability; }
+    public void setAvailability(String availability) { this.availability = availability; }
 
 
     @Override
@@ -141,6 +145,7 @@ public class Leaser implements Parcelable {
         dest.writeString(lastname);
         dest.writeDouble(carpark.getLatitude());
         dest.writeDouble(carpark.getLongitude());
+        dest.writeString(availability);
     }
 
 }
