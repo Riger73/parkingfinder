@@ -9,14 +9,14 @@ Uses Google CLoud REST API ad has a datastore on Firestore. Authentication is by
 The structure of the app follows MVP (Model View Presentation) with the following directory structure:
 
 app
-___src
-______main
-__________java/com/pp1/parkingfinder
-___________________________________model
-___________________________________view
-___________________________________util
-__________res
-_____________layout
+##src
+####main
+######java/com/pp1/parkingfinder
+########model
+########view
+########util
+####res
+######layout
 
 All of the presentation is handled in view - thus all the "activities". Model has casses that form the object models for customers, leasers, 
 and making a booking. Utils handles services such as geocoding.
