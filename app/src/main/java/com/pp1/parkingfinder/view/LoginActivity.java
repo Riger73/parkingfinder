@@ -2,9 +2,9 @@ package com.pp1.parkingfinder.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -13,177 +13,97 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.UserClient;
-import com.pp1.parkingfinder.model.User;
 
-import static android.text.TextUtils.isEmpty;
+public class LoginActivity extends AppCompatActivity {
 
-public class LoginActivity extends AppCompatActivity implements
-        View.OnClickListener
-{
+    private EditText inputEmail, inputPassword;
+    private ProgressBar progressBar;
 
-    private static final String TAG = "LoginActivity";
-
-    //Firebase
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    // widgets
-    private EditText mEmail, mPassword;
-    private ProgressBar mProgressBar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set the view now
         setContentView(R.layout.login_activity);
-        mEmail = findViewById(R.id.editTextEmail);
-        mPassword = findViewById(R.id.editTextPassword);
-        mProgressBar = findViewById(R.id.progressbar);
 
-        setupFirebaseAuth();
-        findViewById(R.id.buttonLogin).setOnClickListener(this);
-        findViewById(R.id.textViewRegister).setOnClickListener(this);
+        inputEmail = (EditText) findViewById(R.id.editTextEmail);
+        inputPassword = (EditText) findViewById(R.id.editTextPassword);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        hideSoftKeyboard();
-    }
-
-    // Shows signin prgress icon
-    private void showDialog(){
-        mProgressBar.setVisibility(View.VISIBLE);
-
-    }
-
-    // Hides signin prgress icon
-    private void hideDialog(){
-        if(mProgressBar.getVisibility() == View.VISIBLE){
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void hideSoftKeyboard(){
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
-    // Implements firebase authentication
-    private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: started.");
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LoginActivity.this, "Authenticated with: "
-                            + user.getEmail(), Toast.LENGTH_SHORT).show();
-
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                            .setTimestampsInSnapshotsEnabled(true)
-                            .build();
-                    db.setFirestoreSettings(settings);
-
-                    DocumentReference userRef = db.collection(getString(R.string.collection_users))
-                            .document(user.getUid());
-
-                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                Log.d(TAG, "onComplete: successfully set the user client.");
-                                User user = task.getResult().toObject(User.class);
-                                ((UserClient)(getApplicationContext())).setUser(user);
-                            }
-                        }
-                    });
-
-                    Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onStart() {
-
-
         super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        // if user logged in, go to sign-in screen
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, MenuActivity.class));
+            finish();
         }
     }
 
-    private void signIn(){
-        //check if the fields are filled out
-        if(!isEmpty(mEmail.getText().toString())
-                && !isEmpty(mPassword.getText().toString())){
-            Log.d(TAG, "onClick: attempting to authenticate.");
-            showDialog();
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getText().toString(),
-                    mPassword.getText().toString())
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
+    }
 
-                            hideDialog();
+    public void onLoginClicked(View view) {
+        String email = inputEmail.getText().toString();
+        final String password = inputPassword.getText().toString();
 
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        if (password.length() < 6) {
+            inputPassword.setError(getString(R.string.minimum_password));
+        } else {
+            Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+        }
+
+        //authenticate user
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            // there was an error
+                            Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException(),
+                                    Toast.LENGTH_LONG).show();
+                            Log.e("MyTag", task.getException().toString());
+                            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                    hideDialog();
-                }
-            });
-        }else{
-            Toast.makeText(LoginActivity.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.textViewRegister:{
-                Intent intent = new Intent(LoginActivity.this,
-                        RegistrationActivity.class);
-                startActivity(intent);
-                break;
-            }
 
-            case R.id.buttonLogin:{
-                try {
-                    signIn();
-                } catch (Exception e) {
-                    Log.w(TAG, "Signin has failed", e);
-
-                }
-                Intent intent = new Intent(LoginActivity.this,
-                        MenuActivity.class);
-                startActivity(intent);
-                break;
-            }
-        }
+    public void onRegisterClicked(View view) {
+        startActivity(new Intent(this, RegistrationActivity .class));
     }
+
 }
