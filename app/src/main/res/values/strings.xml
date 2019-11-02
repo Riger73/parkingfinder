@@ -59,4 +59,5 @@
     <string name="btn_sign_out">Logout</string>
     <string name="name">Name</string>
     <string name="username">Username</string>
+    <string name="auth_success">Successful Login, Welcome!</string>
 </resources>

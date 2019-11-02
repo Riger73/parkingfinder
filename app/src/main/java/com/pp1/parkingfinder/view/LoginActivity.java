@@ -75,10 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (password.length() < 6) {
             inputPassword.setError(getString(R.string.minimum_password));
-        } else {
-            Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
         }
-
         //authenticate user
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -94,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
 
                         } else {
+                            Toast.makeText(LoginActivity.this, getString(R.string.auth_success), Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                             startActivity(intent);
                             finish();
