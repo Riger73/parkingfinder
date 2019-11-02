@@ -36,7 +36,7 @@ public class RegistrationActivity extends AppCompatActivity implements
     private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
     private ProgressBar mProgressBar;
 
-    //vars
+    //variabless
     private FirebaseFirestore mDb;
 
     @Override
