@@ -1,14 +1,18 @@
 package com.pp1.parkingfinder.view;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,20 +76,30 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.search_listing_activity);
         mAuth = FirebaseAuth.getInstance();
         mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
-
-        editTextLocation = findViewById(R.id.editTextLocation);
         listViewParkingListings = findViewById(R.id.listViewParkingListings);
+        editTextLocation = findViewById(R.id.editTextLocation);
 
         // Waits for a button click action for booking button
         findViewById(R.id.btBook).setOnClickListener(this);
 
         loadParkingLisitngs();
 
+        // Allows selection of listed items - to book
+        listViewParkingListings.setOnItemClickListener (
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent,
+                                        View view,
+                                        int position,
+                                        long id) {
+                    Toast.makeText(SearchListingActivity.this,
+                            "Clicked ID = " + id, Toast.LENGTH_SHORT).show();
+                }
+            });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
 
