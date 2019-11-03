@@ -155,7 +155,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 Task 1) Change "carpark" item into String type and not LatLng
                             *   or Geopoint
                             *   Task 2) Implement "availability" as a datetime field in the listing
-                            */
+                            */ 
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
