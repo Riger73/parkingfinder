@@ -1,8 +1,5 @@
 package com.pp1.parkingfinder.view;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,21 +33,19 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.model.Leaser;
+import com.pp1.parkingfinder.adapter.RecyclerViewAdapter;
+import com.pp1.parkingfinder.model.Listing;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
     // Collection for ListView items
-    ArrayList<String> listings = new ArrayList<>();
-    HashMap<String, LatLng> location = new HashMap<String, LatLng>();
+    ArrayList<Listing> listings = new ArrayList<>();
+    //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
 
     ArrayAdapter arrayAdapter;
 
@@ -60,7 +56,10 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     private EditText editTextLocation;
     private MapFragment mMapView;
-    private ListView listViewParkingListings;
+    // private ListView listViewParkingListings;
+    RecyclerView recyclerView;
+    RecyclerViewAdapter recyclerViewAdapter;
+
     private DatePicker datePicker;
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
@@ -74,9 +73,11 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_listing_activity);
+
+        recyclerView = findViewById(R.id.rvListings);
         mAuth = FirebaseAuth.getInstance();
         mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
-        listViewParkingListings = findViewById(R.id.listViewParkingListings);
+        // listViewParkingListings = findViewById(R.id.listViewParkingListings);
         editTextLocation = findViewById(R.id.editTextLocation);
 
         // Waits for a button click action for booking button
@@ -84,8 +85,13 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         loadParkingLisitngs();
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerViewAdapter = new RecyclerViewAdapter(this, listings);
+
         // Allows selection of listed items - to book
-        listViewParkingListings.setOnItemClickListener (
+        /* listViewParkingListings.setOnItemClickListener (
             new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent,
@@ -96,6 +102,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                             "Clicked ID = " + id, Toast.LENGTH_SHORT).show();
                 }
             });
+        */
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -155,61 +162,36 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
-
-        listViewParkingListings.setAdapter(arrayAdapter);
-
-        db.collection("Leasers")
+        db.collection(getString(R.string.collection_parking_listings))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            /* Todo -
-                                Task 1) Change "carpark" item into String type and not LatLng
-                            *   or Geopoint
-                            *   Task 2) Implement "availability" as a datetime field in the listing
-                            */ 
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 // Todo - Make "address" a string deal with Geopoints later
+                                Listing lists = new Listing();
+                                //lists.setFirstname(document.getString("firstname"));
+                                //lists.setEmail(document.getString("email"));
+                                lists.setAddress(document.getString("address"));
+                                lists.setAvailability(document.getString("availability"));
 
-                                String email = document.getString("email");
-                                String firstname = document.getString("firstname");
-                                String addressName = document.getString("address");
+                                listings.add(lists);
 
-                                // Todo - implement "availability" as a datetime field from database
-
-                                Timestamp ts = document.getTimestamp("availability");
-                                long seconds = ts.getSeconds();
-                                int nanoSeconds = ts.getNanoseconds();
-
-                                Timestamp time = new Timestamp(seconds, nanoSeconds);
-                                String availability = timestampToString(time.getSeconds());
-
-                                // Todo - retrieving geopoints
-                                GeoPoint gc = document.getGeoPoint("carpark");
-                                double lat = gc.getLatitude();
-                                double lng = gc.getLongitude ();
-                                LatLng latLng = new LatLng(lat, lng);
-
-                                location.put(firstname, latLng);
-
-                                // Lists and formats all data fields required
-                                // Todo - add String "carpark" address and Datestime for datbase
-
-                                listData += "\nLeaser: " + firstname + "\nContact details: " + email +
-                                        "\n" + "\nAddress: " + addressName + "\n" +
-                                        "\nAvailability: " + availability + "\n" +
-                                        "\nGeoPoint: " + latLng + "\n";
-
-                                //Log.d(TAG, "Leaser String: " +  listData);
                             }
-                            listings.add(listData);
-                            arrayAdapter.notifyDataSetChanged();
+
+                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
+                            recyclerViewAdapter = new RecyclerViewAdapter(SearchListingActivity.this, listings);
+
+                            //listViewParkingListings.setAdapter(arrayAdapter);
+                            recyclerView.setAdapter(recyclerViewAdapter);
+
+                            recyclerViewAdapter.notifyDataSetChanged();
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

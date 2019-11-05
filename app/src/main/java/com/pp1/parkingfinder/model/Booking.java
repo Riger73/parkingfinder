@@ -1,3 +1,4 @@
+
 package com.pp1.parkingfinder.model;
 
 import android.widget.DatePicker;
@@ -27,12 +28,11 @@ public class Booking {
         this.customer = customer;
     }
 
-    public Integer getemail() { return email; }
+    public Integer getEmail() { return email; }
 
     public void setEmail(Integer email) {
         this.email = email;
     }
-
 
     public String getAddress() {
         return address;

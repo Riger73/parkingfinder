@@ -16,11 +16,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
         android:hint="@string/location"
-        android:inputType="text" />
+        android:inputType="text"
+        android:autofillHints="" />
 
     <DatePicker
         android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
+        android:layout_width="374dp"
         android:layout_height="91dp"
         android:endYear="2100"
         android:headerBackground="@color/CadetBlue"
@@ -33,11 +34,11 @@
         android:layout_height="wrap_content"
         android:text="@string/book" />
 
-    <ListView
-        android:id="@+id/listViewParkingListings"
-        android:layout_width="wrap_content"
-        android:layout_height="190dp"
-        android:background="@drawable/common_google_signin_btn_icon_light_normal_background"></ListView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_google_signin_btn_icon_light_normal_background" />
 
     <fragment
         android:id="@+id/map"
@@ -49,7 +50,7 @@
 
     <ScrollView
         android:layout_width="371dp"
-        android:layout_height="96dp"
+        android:layout_height="94dp"
         android:verticalScrollbarPosition="right">
 
         <LinearLayout
@@ -76,10 +77,5 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
 
 </LinearLayout>
