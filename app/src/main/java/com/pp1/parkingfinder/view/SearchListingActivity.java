@@ -201,12 +201,13 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
 
         public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btBook:{
+        //switch (view.getId()){
+            //case R.id.btBook:{
 
-                break;
-            }
-        }
+              //  break;
+            //}
+
+        //}
     }
 
     private void loadDatePickerSearch() {

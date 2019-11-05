@@ -4,6 +4,7 @@
 package com.pp1.parkingfinder.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listings.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    // Holds the view for the RecyuclerVView list element in Search Listing Activity
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView tvAddress, tvAvailability;
 
         public ViewHolder(@Nullable View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             tvAddress = itemView.findViewById(R.id.address);
             tvAvailability = itemView.findViewById(R.id.availability);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int position = getAdapterPosition();
+            Log.d("Clicked", "onClick"  + position);
         }
     }
 }
