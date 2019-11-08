@@ -3,12 +3,9 @@ package com.pp1.parkingfinder.view;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +22,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,7 +35,7 @@ import com.pp1.parkingfinder.model.Listing;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
 
 public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
@@ -90,19 +86,6 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         recyclerViewAdapter = new RecyclerViewAdapter(this, listings);
 
-        // Allows selection of listed items - to book
-        /* listViewParkingListings.setOnItemClickListener (
-            new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent,
-                                        View view,
-                                        int position,
-                                        long id) {
-                    Toast.makeText(SearchListingActivity.this,
-                            "Clicked ID = " + id, Toast.LENGTH_SHORT).show();
-                }
-            });
-        */
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -138,24 +121,17 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                                 mMap.animateCamera(CameraUpdateFactory
                                         .newCameraPosition(cameraPosition));
                             }
-
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        // If the user isn't logged in it will redirect to the login screen
-        // if (mAuth.getCurrentUser() == null) {
-        //    finish();
-        //    startActivity(new Intent(this, LoginActivity.class));
-        //}
     }
 
     private void loadParkingLisitngs() {
@@ -175,8 +151,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                                 // Todo - Make "address" a string deal with Geopoints later
                                 Listing lists = new Listing();
-                                //lists.setFirstname(document.getString("firstname"));
-                                //lists.setEmail(document.getString("email"));
+
                                 lists.setAddress(document.getString("address"));
                                 lists.setAvailability(document.getString("availability"));
 
@@ -200,31 +175,34 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     }
 
 
-        public void onClick(View view) {
+    public void onClick(View view) {
         //switch (view.getId()){
-            //case R.id.btBook:{
+        //case R.id.btBook:{
 
-              //  break;
-            //}
+        //  break;
+        //}
 
         //}
     }
+
 
     private void loadDatePickerSearch() {
         //TO BE COMPLETED
     }
 
+
     private void loadAddressSearch() {
 
     }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 
-    public String timestampToString(Long date)
-    {
+
+    public String timestampToString(Long date) {
         String leaserDate;
 
         SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -233,5 +211,4 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         return leaserDate;
 
     }
-
 }

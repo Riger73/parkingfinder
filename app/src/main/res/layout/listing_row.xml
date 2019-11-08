@@ -43,5 +43,22 @@
                 android:textSize="14sp" />
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="332dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="119dp"
+                android:layout_height="125dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="-6dp"
+                android:layout_marginBottom="23dp"
+                app:srcCompat="@drawable/book" />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
