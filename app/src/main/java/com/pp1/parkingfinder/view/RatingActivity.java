@@ -86,7 +86,6 @@ public class RatingActivity extends AppCompatActivity {
                 booking.setCustomer(customer);
                 booking.setAddress(address);
                 //booking.setEmail(email);
-                booking.setRegistration(registration);
                 booking.setAvailability(bookingdate);
                 // Checks for empty values
                 if(booking != null){

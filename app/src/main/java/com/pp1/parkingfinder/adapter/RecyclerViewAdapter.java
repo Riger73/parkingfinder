@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,6 +33,10 @@ import java.util.List;
 import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.pp1.parkingfinder.model.Constants.ADDRESS;
+import static com.pp1.parkingfinder.model.Constants.AVAILABILITY;
+import static com.pp1.parkingfinder.model.Constants.EMAIL;
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -68,60 +74,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                String availability) {
 
         String email, user_id;
-        Booking booking = new Booking();
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-        booking.setCustomer(user_id);
-        booking.setEmail(email);
-        booking.setAddress(address);
-        booking.setAvailability(availability);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> bookingData = new HashMap<>();
+        bookingData.put(EMAIL, email);
+        bookingData.put(ADDRESS, address);
+        bookingData.put(AVAILABILITY, availability);
 
-        db.collection(data)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        //DocumentReference newBooking =
+        db.collection("Booking").document(user_id).set(bookingData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            String listData = "";
-                            for(QueryDocumentSnapshot document : task.getResult()) {
+                    public void onSuccess(Void aVoid) {
 
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                // Todo - Make "address" a string deal with Geopoints later
-                                Listing lists = new Listing();
-
-                                lists.setAddress(document.getString("address"));
-                                lists.setAvailability(document.getString("availability"));
-
-                                listings.add(lists);
-
-                            }
-
-                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
-                            recyclerViewAdapter = new RecyclerViewAdapter(SearchListingActivity.this, listings);
-
-                            //listViewParkingListings.setAdapter(arrayAdapter);
-                            recyclerView.setAdapter(recyclerViewAdapter);
-
-                            recyclerViewAdapter.notifyDataSetChanged();
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: Booking database update failed" + e.toString());
                     }
                 });
-        Map<String, Object> data = new HashMap<>();
-
-        DocumentReference newBooking = db.collection("booking").document();
-
-// Later...
-        newBooking.set(data);
-
     }
 
     // Holds the view for the RecyclerVView list element in Search Listing Activity

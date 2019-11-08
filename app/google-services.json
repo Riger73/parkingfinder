@@ -8,41 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:339004358563:android:60de790975b248454ea416",
-        "android_client_info": {
-          "package_name": "com.pp1.parkingfinder"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "339004358563-8onfqt792jcnjgk7cpm9bokpkhv6rovk.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD17d9tfB1J-I53cs5CXrt6KnpZRNMksx8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "339004358563-8onfqt792jcnjgk7cpm9bokpkhv6rovk.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:339004358563:android:638f6849dbcf2d2a4ea416",
         "android_client_info": {
           "package_name": "com.pp1.parkingfinder"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "339004358563-adqgpupmqpsk2jkbgc62m93044p1jakl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pp1.parkingfinder",
+            "certificate_hash": "f275a75a3dcfd083e959d0beeb37a0aa1ab52567"
+          }
+        },
         {
           "client_id": "339004358563-8s4plteobufetm6th182sc1bt303qvdh.apps.googleusercontent.com",
           "client_type": 1,
