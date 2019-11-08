@@ -76,9 +76,6 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
         editTextLocation = findViewById(R.id.editTextLocation);
 
-        // Waits for a button click action for booking button
-        findViewById(R.id.btBook).setOnClickListener(this);
-
         loadParkingLisitngs();
 
         recyclerView.setHasFixedSize(true);
@@ -176,13 +173,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
 
     public void onClick(View view) {
-        //switch (view.getId()){
-        //case R.id.btBook:{
 
-        //  break;
-        //}
-
-        //}
     }
 
 
