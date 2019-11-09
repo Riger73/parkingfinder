@@ -1,5 +1,6 @@
 package com.pp1.parkingfinder.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,6 +75,10 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
         editTextLocation = findViewById(R.id.editTextLocation);
+
+        // Action on button click - Calls button lister on object
+        findViewById(R.id.btMenu).setOnClickListener(this);
+        findViewById(R.id.btLogout).setOnClickListener(this);
 
         loadParkingListings();
 
@@ -172,7 +177,24 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
 
     public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btMenu: {
 
+                Intent intent = new Intent(SearchListingActivity.this,
+                        MenuActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.btLogout: {
+
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                Intent intent = new Intent(SearchListingActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
     }
 
 
