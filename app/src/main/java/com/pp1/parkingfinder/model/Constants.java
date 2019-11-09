@@ -13,4 +13,10 @@ public class Constants {
     public static final Object SUCCESS_RESULT = 9004;
     public static final Object FAILURE_RESULT = 9005;
     public static final String LOCATION_DATA_EXTRA = "";
+
+    // Booking key values
+    public static final String USER_ID = "user_id";
+    public static final String EMAIL = "email";
+    public static final String ADDRESS = "address";
+    public static final String AVAILABILITY = "availability";
 }

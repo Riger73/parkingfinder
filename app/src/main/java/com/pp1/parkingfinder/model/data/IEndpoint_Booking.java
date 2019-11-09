@@ -2,8 +2,8 @@ package com.pp1.parkingfinder.model.data;
 
 import android.widget.DatePicker;
 
-import com.pp1.parkingfinder.model.Booking;
 
+import com.pp1.parkingfinder.model.Booking;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pp1.parkingfinder.R;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
@@ -89,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
-
                         } else {
                             Toast.makeText(LoginActivity.this, getString(R.string.auth_success), Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
@@ -100,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+
     public void onRegisterClicked(View view) {
         startActivity(new Intent(this, RegistrationActivity .class));
     }
-
 }

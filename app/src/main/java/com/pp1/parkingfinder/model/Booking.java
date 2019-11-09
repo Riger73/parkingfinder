@@ -1,18 +1,19 @@
+
 package com.pp1.parkingfinder.model;
 
 import android.widget.DatePicker;
 
 public class Booking {
     private String customer;
-    private DatePicker bookingdate;
-    private Integer email;
+    private String availability;
+    private String email;
     private String address;
     private String registration;
 
     public Booking()
     {
         this.customer = customer;
-        this.bookingdate = bookingdate;
+        this.availability = availability;
         this.email = email;
         this.address = address;
         this.registration = registration;
@@ -27,12 +28,11 @@ public class Booking {
         this.customer = customer;
     }
 
-    public Integer getemail() { return email; }
+    public String getEmail() { return email; }
 
-    public void setEmail(Integer email) {
+    public void setEmail(String email) {
         this.email = email;
     }
-
 
     public String getAddress() {
         return address;
@@ -42,20 +42,12 @@ public class Booking {
         this.address = address;
     }
 
-    public String getRegistration() {
-        return registration;
+    public String getAvailability() {
+        return availability;
     }
 
-    public void setRegistration(String registration) {
-        this.registration = registration;
-    }
-
-    public DatePicker getbookingdate() {
-        return bookingdate;
-    }
-
-    public void setBookingdate(String bookingdate) {
-        this.registration = bookingdate;
+    public void setAvailability(String availability) {
+        this.registration = availability;
     }
 
 }

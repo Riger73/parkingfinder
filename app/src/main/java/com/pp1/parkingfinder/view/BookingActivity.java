@@ -1,106 +1,192 @@
 package com.pp1.parkingfinder.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.pp1.parkingfinder.R;
+import com.pp1.parkingfinder.adapter.BookingRecyclerViewAdapter;
 import com.pp1.parkingfinder.model.Booking;
-import com.pp1.parkingfinder.model.Constants;
-import com.pp1.parkingfinder.model.data.DatabaseHelper;
-import com.pp1.parkingfinder.model.data.IEndpoint_Booking;
 
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
-public class BookingActivity extends AppCompatActivity {
+public class BookingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    DatabaseHelper db;
-    EditText mTextCustomer;
-    EditText mTextEmail;
-    EditText mTextBookingDate;
-    EditText mTextAddress;
-    EditText mTextRegistration;
-    Button mButtonBooking;
-    TextView mTextViewList;
-    private IEndpoint_Booking bookingApi;
+    // Collection for ListView items
+    ArrayList<Booking> bookings = new ArrayList<>();
+    //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
+    private Context context;
+    ArrayAdapter arrayAdapter;
 
-    Booking booking = new Booking();
-    private void BookingDatagram
-            (Booking booking) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Retrofit.Builder retrofitBuilder =
-                new Retrofit.Builder()
-                        .baseUrl(Constants.URL_PF_ENDPOINT)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(okHttpClient);
-        Retrofit retrofit = retrofitBuilder.build();
-        bookingApi = retrofit.create(IEndpoint_Booking.class);
+    private static final String TAG = "BookingActivity";
+    private static final String KEY_DESCRIPTION = "description";
+    FirebaseAuth mAuth;
 
-        //Leaser listing =
-        //        new Leaser(owner, contact, parkingspotID, description, latitude, longitude);
-        Call<ResponseBody> callableResponse = bookingApi.createBooking(booking);
-        //dumpCallableResponse(callableResponse);
-    }
+    private EditText editTextLocation;
+
+    // private ListView listViewParkingListings;
+    RecyclerView recyclerView;
+    BookingRecyclerViewAdapter bookingRecyclerViewAdapter;
+
+    // With current logged in user, calls collection called "Leasers" from remote data store.
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference listingRef = db.collection("Leasers");
+
+    // Calls google maps
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.booking_activity);
 
-        db = new DatabaseHelper(this);
-        mTextBookingDate = (EditText)findViewById(R.id.edittext_bookingdate);
-        mTextCustomer = (EditText)findViewById(R.id.edittext_customer);
-        mTextAddress = (EditText)findViewById(R.id.edittext_address);
-        mTextEmail = (EditText) findViewById(R.id.edittext_email);
-        mTextRegistration = (EditText) findViewById(R.id.edittext_registration);
-        mButtonBooking = (Button)findViewById(R.id.button_booking);
-        mTextViewList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent LoginIntent =
-                        new Intent(BookingActivity.this,LoginActivity.class);
-                startActivity(LoginIntent);
+        recyclerView = findViewById(R.id.rvListings);
+        mAuth = FirebaseAuth.getInstance();
+
+        // listViewParkingListings = findViewById(R.id.listViewParkingListings);
+        editTextLocation = findViewById(R.id.editTextLocation);
+
+        // Action on button click - Calls button lister on object
+        findViewById(R.id.btMenu).setOnClickListener(this);
+        findViewById(R.id.btLogout).setOnClickListener(this);
+
+        loadBookingListings();
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        bookingRecyclerViewAdapter = new BookingRecyclerViewAdapter(this, bookings);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    private void loadBookingListings() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(getString(R.string.collection_parking_bookings))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            String listData = "";
+                            for(QueryDocumentSnapshot document : task.getResult()) {
+
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                // Todo - Make "address" a string deal with Geopoints later
+                                Booking bookingLists = new Booking();
+
+                                bookingLists.setEmail(document.getString("email"));
+                                bookingLists.setAddress(document.getString("address"));
+                                bookingLists.setAvailability(document.getString("availability"));
+
+                                bookings.add(bookingLists);
+
+                            }
+
+                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, bookings);
+                            bookingRecyclerViewAdapter = new BookingRecyclerViewAdapter(BookingActivity.this, bookings);
+
+                            //listViewParkingListings.setAdapter(arrayAdapter);
+                            recyclerView.setAdapter(bookingRecyclerViewAdapter);
+
+                            bookingRecyclerViewAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btMenu: {
+
+                Intent intent = new Intent(BookingActivity.this,
+                        MenuActivity.class);
+                startActivity(intent);
+                break;
             }
-        });
+            case R.id.btLogout: {
 
-        mButtonBooking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String customer = mTextCustomer.getText().toString().trim();
-                String address = mTextAddress.getText().toString().trim();
-                String email = mTextEmail.getText().toString();
-                String bookingdate = mTextBookingDate.getText().toString().trim();
-                String registration = mTextRegistration.getText().toString().trim();
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                Intent intent = new Intent(BookingActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
 
-                Booking booking = new Booking();
-                booking.setCustomer(customer);
-                booking.setAddress(address);
-                //booking.setEmail(email);
-                booking.setRegistration(registration);
-                booking.setBookingdate(bookingdate);
-                // Checks for empty values
-                if(booking != null){
-                    // Sends to endpoint
-                   BookingDatagram(booking);
-                    Toast.makeText(
-                            BookingActivity.this,
-                            "You have registered",Toast.LENGTH_SHORT).show();
-                    Intent moveToLogin =
-                            new Intent(
-                                    BookingActivity.this,LoginActivity.class);
-                    startActivity(moveToLogin);
-                }
+                break;
             }
-        });
+        }
+    }
 
-}}
+
+    private void loadDatePickerSearch() {
+        //TO BE COMPLETED
+    }
+
+
+    private void loadAddressSearch() {
+
+    }
+
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
+    public String timestampToString(Long date) {
+        String leaserDate;
+
+        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        leaserDate = sfd.format(new Date(date*1000));
+
+        return leaserDate;
+
+    }
+}

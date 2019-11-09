@@ -37,11 +37,12 @@
     <string name="intent_location">intent_location</string>
 
     <!-- Firestore Strings -->
-    <string name="collection_leasers">Leasers</string>
-    <string name="collection_users">Customers</string>
+    <string name="collection_leasers">User</string>
+    <string name="collection_users">User</string>
     <string name="collection_rego">Registration</string>
-    <string name="collection_parking_listings">Listings</string>
-    <string name="customer">customer</string>
+    <string name="collection_parking_listings">Listing</string>
+    <string name="collection_parking_bookings">Booking</string>
+    <string name="user">user</string>
     <string name="location">Location</string>
     <string name="no_address_found">No known address</string>
     <string name="address_found">Address found</string>
