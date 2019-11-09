@@ -29,7 +29,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pp1.parkingfinder.R;
-import com.pp1.parkingfinder.adapter.RecyclerViewAdapter;
+import com.pp1.parkingfinder.adapter.ListingRecyclerViewAdapter;
 import com.pp1.parkingfinder.model.Listing;
 
 import java.text.SimpleDateFormat;
@@ -46,15 +46,14 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     ArrayAdapter arrayAdapter;
 
     private static final String TAG = "SearchLisitngActivity";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_DESCRIPTION = "description";
+
     FirebaseAuth mAuth;
 
     private EditText editTextLocation;
     private MapFragment mMapView;
     // private ListView listViewParkingListings;
     RecyclerView recyclerView;
-    RecyclerViewAdapter recyclerViewAdapter;
+    ListingRecyclerViewAdapter listingRecyclerViewAdapter;
 
     private DatePicker datePicker;
 
@@ -76,12 +75,12 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
         editTextLocation = findViewById(R.id.editTextLocation);
 
-        loadParkingLisitngs();
+        loadParkingListings();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerViewAdapter = new RecyclerViewAdapter(this, listings);
+        listingRecyclerViewAdapter = new ListingRecyclerViewAdapter(this, listings);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -131,7 +130,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private void loadParkingLisitngs() {
+    private void loadParkingListings() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -156,13 +155,13 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                             }
 
-                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listings);
-                            recyclerViewAdapter = new RecyclerViewAdapter(SearchListingActivity.this, listings);
+                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, bookings);
+                            listingRecyclerViewAdapter = new ListingRecyclerViewAdapter(SearchListingActivity.this, listings);
 
                             //listViewParkingListings.setAdapter(arrayAdapter);
-                            recyclerView.setAdapter(recyclerViewAdapter);
+                            recyclerView.setAdapter(listingRecyclerViewAdapter);
 
-                            recyclerViewAdapter.notifyDataSetChanged();
+                            listingRecyclerViewAdapter.notifyDataSetChanged();
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

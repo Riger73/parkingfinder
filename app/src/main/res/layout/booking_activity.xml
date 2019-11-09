@@ -1,20 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/img_background"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.pp1.parkingfinder.view.SearchListingActivity">
 
-    <TextView
-        android:id="@+id/tvContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp">
 
-    <Button
-        android:id="@+id/btnBooking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/book" />
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="237dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="12dp"
+            android:autofillHints=""
+            android:background="@color/DarkGray"
+            android:fontFamily="sans-serif-black"
+            android:text="Manage Your Bookings"
+            android:textAllCaps="true"
+            android:textColor="#1566BD"
+            android:textStyle="bold"
+            tools:targetApi="o" />
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="131dp"
+            android:layout_height="64dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="-23dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/editTextLocation"
+            app:srcCompat="@drawable/bookings" />
+    </RelativeLayout>
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListings"
+        android:layout_width="match_parent"
+        android:layout_height="237dp"
+        android:background="@color/Gainsboro" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="202dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="371dp"
+        android:layout_height="157dp">
+
+        <Button
+            android:id="@+id/btLogout"
+            android:layout_width="152dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="200dp"
+            android:layout_weight="1"
+            android:background="@color/Chartreuse"
+            android:text="@string/logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></Button>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="184dp"
+            android:layout_height="129dp"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/btMenu"
+                android:layout_width="152dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@color/Chartreuse"
+                android:text="@string/options_menu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></Button>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

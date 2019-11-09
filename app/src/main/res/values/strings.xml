@@ -41,6 +41,7 @@
     <string name="collection_users">User</string>
     <string name="collection_rego">Registration</string>
     <string name="collection_parking_listings">Listing</string>
+    <string name="collection_parking_bookings">Booking</string>
     <string name="user">user</string>
     <string name="location">Location</string>
     <string name="no_address_found">No known address</string>
