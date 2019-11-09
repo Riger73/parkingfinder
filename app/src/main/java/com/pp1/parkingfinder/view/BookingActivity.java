@@ -91,6 +91,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -193,6 +194,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(BookingActivity.this,
                         LoginActivity.class);
                 startActivity(intent);
+
                 break;
             }
         }

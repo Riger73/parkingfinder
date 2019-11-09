@@ -4,6 +4,7 @@
 package com.pp1.parkingfinder.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.model.Listing;
+import com.pp1.parkingfinder.view.BookingActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +115,14 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
             String sAddress = tvAddress.getText().toString();
             String sAvailability = tvAvailability.getText().toString();
             int position = getAdapterPosition();
+            Listing listing = listings.get(position);
+
             createBooking(sAddress, sAvailability);
+
+            Intent intent = new Intent(context, BookingActivity.class);
+
+            context.startActivity(intent);
+
             Log.d("Clicked", "onClick"  + position);
         }
     }
