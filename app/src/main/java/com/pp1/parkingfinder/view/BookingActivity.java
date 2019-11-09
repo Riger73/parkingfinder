@@ -1,12 +1,16 @@
 package com.pp1.parkingfinder.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,24 +30,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.adapter.BookingRecyclerViewAdapter;
 import com.pp1.parkingfinder.model.Booking;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
-public class BookingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
+public class BookingActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Collection for ListView items
     ArrayList<Booking> bookings = new ArrayList<>();
     //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
-
+    private Context context;
     ArrayAdapter arrayAdapter;
 
     private static final String TAG = "BookingActivity";
@@ -51,12 +57,10 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
     FirebaseAuth mAuth;
 
     private EditText editTextLocation;
-    private MapFragment mMapView;
+
     // private ListView listViewParkingListings;
     RecyclerView recyclerView;
     BookingRecyclerViewAdapter bookingRecyclerViewAdapter;
-
-    private DatePicker datePicker;
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,7 +76,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
         recyclerView = findViewById(R.id.rvListings);
         mAuth = FirebaseAuth.getInstance();
-        mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
+
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
         editTextLocation = findViewById(R.id.editTextLocation);
 
@@ -87,47 +91,6 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
         bookingRecyclerViewAdapter = new BookingRecyclerViewAdapter(this, bookings);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("Leasers")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-
-                            for(QueryDocumentSnapshot document : task.getResult()) {
-
-                                // Todo - retrieving geopoints
-                                GeoPoint gc = document.getGeoPoint("carpark");
-                                double lat = gc.getLatitude();
-                                double lng = gc.getLongitude ();
-                                LatLng latLng = new LatLng(lat, lng);
-                                String firstname = document.getString("firstname");
-
-                                mMap.addMarker(new MarkerOptions().position(latLng).title(firstname));
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng
-                                        (lat, lng)).zoom(15).build();
-
-                                mMap.animateCamera(CameraUpdateFactory
-                                        .newCameraPosition(cameraPosition));
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
     }
 
     @Override

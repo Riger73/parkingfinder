@@ -1,12 +1,16 @@
 package com.pp1.parkingfinder.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,16 +30,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.adapter.ListingRecyclerViewAdapter;
 import com.pp1.parkingfinder.model.Listing;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
@@ -43,7 +49,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     // Collection for ListView items
     ArrayList<Listing> listings = new ArrayList<>();
     //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
-
+    private Context context;
     ArrayAdapter arrayAdapter;
 
     private static final String TAG = "SearchLisitngActivity";
@@ -94,12 +100,43 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
     }
 
 
+    public LatLng getLocationFromAddress(SearchListingActivity ls, String inputtedAddress) {
+
+        Geocoder coder = new Geocoder(ls);
+        List<Address> address;
+        LatLng resLatLng = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(inputtedAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            if (address.size() == 0) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            resLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+            Toast.makeText(ls, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        return resLatLng;
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Leasers")
+        db.collection("Listing")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -109,13 +146,15 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
                                 // Todo - retrieving geopoints
-                                GeoPoint gc = document.getGeoPoint("carpark");
-                                double lat = gc.getLatitude();
-                                double lng = gc.getLongitude ();
-                                LatLng latLng = new LatLng(lat, lng);
-                                String firstname = document.getString("firstname");
+                                String inputAddress = document.getString("address");
 
-                                mMap.addMarker(new MarkerOptions().position(latLng).title(firstname));
+                                double lat = -37.8676;
+                                double lng = 144.98099;
+
+                                LatLng latLng = new LatLng(lat, lng);
+                                latLng = getLocationFromAddress(SearchListingActivity.this, inputAddress);
+
+                                mMap.addMarker(new MarkerOptions().position(latLng).title(inputAddress));
                                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng
                                         (lat, lng)).zoom(15).build();
 
