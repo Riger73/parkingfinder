@@ -53,7 +53,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference listingRef = db.collection("Leasers");
+    private CollectionReference listingRef = db.collection("User");
 
     // Calls google maps
     private GoogleMap mMap;
@@ -101,9 +101,8 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.i(TAG, document.getId() + " => " + document.getData());
 
-                                // Todo - Make "address" a string deal with Geopoints later
                                 Booking bookingLists = new Booking();
 
                                 bookingLists.setEmail(document.getString("email"));

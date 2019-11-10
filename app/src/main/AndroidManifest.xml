@@ -45,8 +45,8 @@
             android:label="@string/title_activity_map">
         </activity>
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pp1.parkingfinder.view.MenuActivity" />
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.pp1.parkingfinder.view.MenuActivity" />
         <activity
             android:name="com.pp1.parkingfinder.view.LoginActivity"
             android:label="@string/app_name">
@@ -74,6 +74,10 @@
         </activity>
         <activity
             android:name="com.pp1.parkingfinder.view.RatingActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name="com.pp1.parkingfinder.view.AddListingActivity"
             android:label="@string/app_name">
         </activity>
     </application>

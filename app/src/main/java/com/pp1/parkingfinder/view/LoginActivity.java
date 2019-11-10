@@ -13,18 +13,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.pp1.parkingfinder.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static boolean chkUser = true;
 
     private EditText inputEmail, inputPassword;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+
+    //Connection to Firestore
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +106,35 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, getString(R.string.auth_success), Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                            startActivity(intent);
-                            finish();
+
+                            // Gets the UID of the logged in user
+                            String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            DocumentReference docRef = db.collection("User").
+                                    document("currentuser");
+                            docRef.get().addOnSuccessListener
+                                    (new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(@NonNull DocumentSnapshot document) {
+                                    if (document.exists()) {
+                                        Log.i(TAG, "DocumentSnapshot data: " + document.getData());
+                                        chkUser = (boolean)document.get("IsLeaser");
+                                        Log.d(TAG, "This a boolean: " + chkUser);
+                                    } else {
+                                        Log.e(TAG, "No such document");
+                                    }
+                                }
+                            });
+                            if(chkUser == true){
+                                Toast.makeText(LoginActivity.this, getString(R.string.auth_success), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this, AddListingActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this, getString(R.string.auth_success), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     }
                 });

@@ -67,18 +67,18 @@ public class AddListingActivity extends AppCompatActivity implements
     }
 
     public void addListing(final String address, String availability) {
-        final String eFirstname = address;
-        final String eLastname = availability;
+        final String eAddress = address;
+        final String eAvailability = availability;
 
         showDialog();
-        String email, user_id;
+        String user_id;
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> listingData = new HashMap<>();
-        listingData.put(ADDRESS, address);
-        listingData.put(AVAILABILITY, availability);
+        listingData.put(ADDRESS, eAddress);
+        listingData.put(AVAILABILITY, eAvailability);
 
         //DocumentReference newBooking =
         db.collection("Listing").document(user_id).set(listingData)
