@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -133,37 +134,6 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                    }
-                });
-    }
-
-    // Deletes Booking data from database
-    public void deleteBooking(String email, String address,
-                              String availability) {
-
-        String user_id;
-        user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> bookingData = new HashMap<>();
-        bookingData.put(EMAIL, email);
-        bookingData.put(ADDRESS, address);
-        bookingData.put(AVAILABILITY, availability);
-
-        //DocumentReference newBooking =
-        db.collection("Booking").document(user_id).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: Booking instance deletion failed"
-                                + e.toString());
                     }
                 });
     }

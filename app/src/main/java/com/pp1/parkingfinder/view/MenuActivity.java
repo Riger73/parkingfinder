@@ -27,7 +27,9 @@ import com.pp1.parkingfinder.R;
 import static com.pp1.parkingfinder.model.Constants.ERROR_DIALOG_REQUEST;
 import static com.pp1.parkingfinder.model.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.pp1.parkingfinder.model.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
-
+/*
+Main entry point after logging in. Has booking managemenr, and listings view options
+ */
 public class MenuActivity extends AppCompatActivity implements
         View.OnClickListener {
     // widgets
@@ -41,7 +43,6 @@ public class MenuActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
-
         findViewById(R.id.selectMap).setOnClickListener(this);
         findViewById(R.id.button_logout).setOnClickListener(this);
         findViewById(R.id.listLeases).setOnClickListener(this);
@@ -63,11 +64,14 @@ public class MenuActivity extends AppCompatActivity implements
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
+        builder.setMessage
+                ("This application requires GPS to work properly, do you want to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    public void onClick
+                            (@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        Intent enableGpsIntent = new Intent(android.provider.Settings
+                                .ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
                     }
                 });
@@ -76,7 +80,8 @@ public class MenuActivity extends AppCompatActivity implements
     }
 
     public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        final LocationManager manager = (LocationManager) getSystemService
+                ( Context.LOCATION_SERVICE );
 
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             buildAlertMessageNoGps();
@@ -105,7 +110,8 @@ public class MenuActivity extends AppCompatActivity implements
     public boolean isServicesOK(){
         Log.d(TAG, "isServicesOK: checking google services version");
 
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MenuActivity.this);
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable
+                (MenuActivity.this);
 
         if(available == ConnectionResult.SUCCESS){
             //everything is fine and the user can make map requests
@@ -115,10 +121,12 @@ public class MenuActivity extends AppCompatActivity implements
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
             //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MenuActivity.this, available, ERROR_DIALOG_REQUEST);
+            Dialog dialog = GoogleApiAvailability.getInstance()
+                    .getErrorDialog(MenuActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }else{
-            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You can't make map requests",
+                    Toast.LENGTH_SHORT).show();
         }
         return false;
     }

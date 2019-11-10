@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,13 +97,14 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        Toast.makeText(context, "Booking Successful",
+                                Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: Booking database update failed" + e.toString());
+                        Log.e(TAG, "onFailure: Booking database update failed" + e.toString());
                     }
                 });
     }
@@ -140,8 +142,6 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
             Intent intent = new Intent(context, BookingActivity.class);
 
             context.startActivity(intent);
-
-            Log.d("Clicked", "onClick"  + position);
         }
     }
 }
