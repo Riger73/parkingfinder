@@ -9,10 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,12 +35,22 @@ import static com.pp1.parkingfinder.model.Constants.ADDRESS;
 import static com.pp1.parkingfinder.model.Constants.AVAILABILITY;
 import static com.pp1.parkingfinder.model.Constants.EMAIL;
 
-
+/*
+Adapter class that displays each listing in a card. This is displayed in a fragment in the
+"SearchListingActivity" class. Incorporates a booking method for customers to make bookings
+*/
 public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
     private List<Listing> listings;
 
+    // initialize popup alert
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+
+    Button btConfirm;
+
+    // Adapter constructor
     public ListingRecyclerViewAdapter(Context context, List<Listing> listings) {
         this.context = context;
         this.listings = listings;
@@ -84,13 +97,14 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        Toast.makeText(context, "Booking Successful",
+                                Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: Booking database update failed" + e.toString());
+                        Log.e(TAG, "onFailure: Booking database update failed" + e.toString());
                     }
                 });
     }
@@ -108,6 +122,12 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
             tvAvailability = itemView.findViewById(R.id.availability);
         }
 
+        // Method to create a popup alert on booking
+        private void createConfirmationPopup(){
+
+            //todo - makes a popup to confirm if the customer wants to make the booking
+        }
+
         @Override
         public void onClick(View v) {
             tvAddress = itemView.findViewById(R.id.address);
@@ -122,8 +142,6 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
             Intent intent = new Intent(context, BookingActivity.class);
 
             context.startActivity(intent);
-
-            Log.d("Clicked", "onClick"  + position);
         }
     }
 }

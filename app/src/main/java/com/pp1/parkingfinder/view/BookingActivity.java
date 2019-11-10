@@ -2,14 +2,11 @@ package com.pp1.parkingfinder.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,15 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,18 +29,24 @@ import com.pp1.parkingfinder.R;
 import com.pp1.parkingfinder.adapter.BookingRecyclerViewAdapter;
 import com.pp1.parkingfinder.model.Booking;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.pp1.parkingfinder.model.Constants.ADDRESS;
+import static com.pp1.parkingfinder.model.Constants.AVAILABILITY;
+import static com.pp1.parkingfinder.model.Constants.EMAIL;
 
+/*
+Creates activity to display customer bookings on search.
+Customers can manage a booking. Currently only includes the ability to cancel
+ */
 public class BookingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // Collection for ListView items
+    // Collection for RecyclerView items
     ArrayList<Booking> bookings = new ArrayList<>();
-    //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
     private Context context;
     ArrayAdapter arrayAdapter;
 
@@ -56,7 +54,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
     private static final String KEY_DESCRIPTION = "description";
     FirebaseAuth mAuth;
 
-    private EditText editTextLocation;
+    private TextView textViewLocation;
 
     // private ListView listViewParkingListings;
     RecyclerView recyclerView;
@@ -78,7 +76,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
         mAuth = FirebaseAuth.getInstance();
 
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
-        editTextLocation = findViewById(R.id.editTextLocation);
+        textViewLocation = findViewById(R.id.textViewLocation);
 
         // Action on button click - Calls button lister on object
         findViewById(R.id.btMenu).setOnClickListener(this);
@@ -140,7 +138,6 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                 });
     }
 
-
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btMenu: {
@@ -165,12 +162,12 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void loadDatePickerSearch() {
-        //TO BE COMPLETED
+        // todo
     }
 
 
     private void loadAddressSearch() {
-
+        // todo
     }
 
 
