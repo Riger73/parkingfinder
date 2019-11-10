@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class User implements Parcelable{
 
+    private Boolean isLeaser;
     private String email;
     private String user_id;
     private String username;
@@ -13,8 +14,9 @@ public class User implements Parcelable{
     private String rego;
 
 
-    public User(String email, String user_id, String username, String firstname, String lastname,
-                String rego) {
+    public User(Boolean isLeaser, String email, String user_id, String username, String firstname,
+                String lastname, String rego) {
+        this.isLeaser = isLeaser;
         this.email = email;
         this.user_id = user_id;
         this.username = username;
@@ -28,6 +30,7 @@ public class User implements Parcelable{
     }
 
     protected User(Parcel in) {
+        isLeaser = (in.readInt() == 0) ? false : true;
         email = in.readString();
         user_id = in.readString();
         username = in.readString();
@@ -47,6 +50,14 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    public Boolean getIsLeaser() {
+        return isLeaser;
+    }
+
+    public void setIsLeaser(Boolean isLeaser) {
+        this.isLeaser = isLeaser;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -120,6 +131,7 @@ public class User implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(isLeaser ? 1 : 0);
         dest.writeString(email);
         dest.writeString(user_id);
         dest.writeString(username);

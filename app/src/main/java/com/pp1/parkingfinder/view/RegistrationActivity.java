@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,11 +32,11 @@ import static com.pp1.parkingfinder.util.Helper.doStringsMatch;
 public class RegistrationActivity extends AppCompatActivity implements
         View.OnClickListener {
     private static final String TAG = "RegistrationActivity";
-
     //widgets
     private EditText mEmail, mRego, mFirstname, mLastname, mPassword, mConfirmPassword;
+    private CheckBox mIsLeaser;
     private ProgressBar mProgressBar;
-
+    Boolean bIsLeaser;
     //variabless
     private FirebaseFirestore mDb;
 
@@ -43,6 +44,7 @@ public class RegistrationActivity extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
+        mIsLeaser = (CheckBox) findViewById(R.id.checkbox_isleaser);
         mEmail = (EditText) findViewById(R.id.edittext_email);
         mPassword = (EditText) findViewById(R.id.edittext_password);
         mConfirmPassword = (EditText) findViewById(R.id.edittext_cnf_password);
@@ -54,15 +56,42 @@ public class RegistrationActivity extends AppCompatActivity implements
         // Action on button click - Calls button lister on object
         findViewById(R.id.button_register).setOnClickListener(this);
         findViewById(R.id.textview_login).setOnClickListener(this);
+        findViewById(R.id.checkbox_isleaser).setOnClickListener(this);
 
+        //bIsLeaser = addListenerOnChkIsLeaser(mIsLeaser);
+        bIsLeaser  = mIsLeaser.isChecked();
         mDb = FirebaseFirestore.getInstance();
+        addListenerOnChkIsLeaser(mIsLeaser);
 
         hideSoftKeyboard();
 
     }
+
+    // Checks for is leaser checkbox
+    public boolean addListenerOnChkIsLeaser(CheckBox ckbIsLeaser) {
+
+        mIsLeaser = (CheckBox) findViewById(R.id.checkbox_isleaser);
+
+        mIsLeaser.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((CheckBox) v).isChecked()) {
+                    bIsLeaser = true;
+                } else {
+                    bIsLeaser = false;
+                }
+
+            }
+        });
+        return bIsLeaser;
+    }
+
      /*
      * Register a new email and password to Firebase Authentication
      *
+     * @param isLeaser
      * @param email
      * @param password
      * @param firstname
@@ -70,8 +99,9 @@ public class RegistrationActivity extends AppCompatActivity implements
      * @param rego
      *
      */
-    public void registerNewEmail(final String email, String password, String firstname,
-                                 String lastname, String rego) {
+    public void registerNewEmail(Boolean isLeaser, final String email, String password,
+                                 String firstname, String lastname, String rego) {
+        final Boolean eIsLeaser = isLeaser;
         final String eFirstname = firstname;
         final String eLastname = lastname;
         final String eRego = rego;
@@ -90,6 +120,7 @@ public class RegistrationActivity extends AppCompatActivity implements
                             String firstname = eFirstname;
                             //insert some default data
                             User user = new User();
+                            user.setIsLeaser(eIsLeaser);
                             user.setEmail(email);
                             user.setUsername(email.substring(0, email.indexOf("@")));
                             user.setUser_id(FirebaseAuth.getInstance().getUid());
@@ -179,7 +210,8 @@ public class RegistrationActivity extends AppCompatActivity implements
                             mConfirmPassword.getText().toString())) {
 
                         //Initiate registration task
-                        registerNewEmail(mEmail.getText().toString(), mPassword.getText().toString(),
+                        registerNewEmail(bIsLeaser,
+                                mEmail.getText().toString(), mPassword.getText().toString(),
                                 mFirstname.getText().toString(), mLastname.getText().toString(),
                                 mRego.getText().toString());
                     } else {

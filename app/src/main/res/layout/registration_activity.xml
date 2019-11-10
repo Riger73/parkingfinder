@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,103 +9,180 @@
     android:gravity="center_horizontal"
     tools:context="com.pp1.parkingfinder.view.RegistrationActivity">
 
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/logo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="549dp">
 
-    <EditText
-        android:id="@+id/edittext_email"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:drawableLeft="@drawable/email"
-        android:hint="@string/email"
-        android:paddingLeft="2dp" />
+        <RelativeLayout
+            android:layout_width="333dp"
+            android:layout_height="84dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="465dp">
 
-    <EditText
-        android:id="@+id/edittext_password"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:drawableLeft="@drawable/password"
-        android:inputType="textPassword"
-        android:hint="@string/password" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="134dp"
+                app:srcCompat="@drawable/logo" />
 
-    <EditText
-        android:id="@+id/edittext_cnf_password"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:drawableLeft="@drawable/password"
-        android:inputType="textPassword"
-        android:hint="@string/confirm_password" />
+        </RelativeLayout>
 
-    <EditText
-        android:id="@+id/edittext_firstname"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:hint="@string/firstname" />
+        <RelativeLayout
+            android:layout_width="383dp"
+            android:layout_height="402dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="60dp">
 
-    <EditText
-        android:id="@+id/edittext_lastname"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:hint="@string/lastname" />
+            <EditText
+                android:id="@+id/edittext_email"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="68dp"
+                android:layout_marginEnd="85dp"
+                android:background="#ffffff"
+                android:drawableLeft="@drawable/email"
+                android:hint="@string/email"
+                android:paddingLeft="2dp" />
 
-    <EditText
-        android:id="@+id/edittext_rego"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:hint="@string/rego" />
+            <EditText
+                android:id="@+id/edittext_password"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="121dp"
+                android:layout_marginEnd="85dp"
+                android:layout_marginBottom="306dp"
+                android:background="#ffffff"
+                android:drawableLeft="@drawable/password"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/button_register"
-        android:layout_width="206dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#04ea00"
-        android:textColor="#ffffff"
-        android:text="@string/register"/>
+            <EditText
+                android:id="@+id/edittext_cnf_password"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="178dp"
+                android:layout_marginEnd="85dp"
+                android:background="#ffffff"
+                android:drawableLeft="@drawable/password"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+            <EditText
+                android:id="@+id/edittext_firstname"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="230dp"
+                android:layout_marginEnd="85dp"
+                android:background="#ffffff"
+                android:hint="@string/firstname" />
+
+            <EditText
+                android:id="@+id/edittext_lastname"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="281dp"
+                android:layout_marginEnd="85dp"
+                android:background="#ffffff"
+                android:hint="@string/lastname" />
+
+            <EditText
+                android:id="@+id/edittext_rego"
+                android:layout_width="206dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="333dp"
+                android:layout_marginEnd="85dp"
+                android:background="#ffffff"
+                android:hint="@string/rego" />
+
+            <CheckBox
+                android:id="@+id/checkbox_isleaser"
+                android:layout_width="98dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="192dp"
+                android:layout_marginBottom="14dp"
+                android:background="@color/AliceBlue"
+                android:checked="false"
+                android:text="Leaser?" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="147dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="38dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:textColor="#ffffff"
-            android:text="@string/already_registered"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="193dp"
+            android:layout_marginBottom="61dp"
+            android:text="@string/already_registered"
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/textview_login"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="148dp"
+            android:layout_marginBottom="61dp"
             android:paddingLeft="10dp"
-            android:textStyle="bold"
+            android:text="@string/login"
             android:textColor="#04ea00"
             android:textSize="16sp"
-            android:text="@string/login"/>
+            android:textStyle="bold" />
 
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        <Button
+            android:id="@+id/button_register"
+            android:layout_width="206dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="102dp"
+            android:background="#04ea00"
+            android:text="@string/register"
+            android:textColor="#ffffff" />
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="186dp"
+            android:layout_marginBottom="9dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
