@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/ic_user_profile" />
 
     <TextView
-        android:id="@+id/edittext_firstname"
+        android:id="@+id/edittext_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

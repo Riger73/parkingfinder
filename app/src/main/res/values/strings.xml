@@ -62,4 +62,6 @@
     <string name="username">Username</string>
     <string name="auth_success">Successful Login, Welcome!</string>
     <string name="confirm">Confirm?</string>
+    <string name="addlisting">Add Listing</string>
+    <string name="availability">Availability</string>
 </resources>
