@@ -31,8 +31,12 @@ import static com.pp1.parkingfinder.model.Constants.ADDRESS;
 import static com.pp1.parkingfinder.model.Constants.AVAILABILITY;
 import static com.pp1.parkingfinder.model.Constants.EMAIL;
 
-
-public class BookingRecyclerViewAdapter extends RecyclerView.Adapter<BookingRecyclerViewAdapter.ViewHolder> {
+/*
+Adapter class that displays each customers bookings in a card. This is displayed in a fragment in the
+"BookingActivity" class. Incorporates a cancelation method for customers to cancel bookings
+*/
+public class BookingRecyclerViewAdapter extends
+        RecyclerView.Adapter<BookingRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
     private List<Booking> bookings;
@@ -64,7 +68,7 @@ public class BookingRecyclerViewAdapter extends RecyclerView.Adapter<BookingRecy
         return bookings.size();
     }
 
-    // Inserts Booking data into database
+    // Deletes Booking data from database
     public void deleteBooking(String email, String address,
                               String availability) {
 
@@ -89,7 +93,8 @@ public class BookingRecyclerViewAdapter extends RecyclerView.Adapter<BookingRecy
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: Booking instance deletion failed" + e.toString());
+                        Log.e(TAG, "onFailure: Booking instance deletion failed"
+                                + e.toString());
                     }
                 });
     }
@@ -118,7 +123,7 @@ public class BookingRecyclerViewAdapter extends RecyclerView.Adapter<BookingRecy
             String sAvailability = tvAvailability.getText().toString();
             int position = getAdapterPosition();
             deleteBooking(sEmail, sAddress, sAvailability);
-            Log.d("Clicked", "onClick"  + position);
+
         }
     }
 }

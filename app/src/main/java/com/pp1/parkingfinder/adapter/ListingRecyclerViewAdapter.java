@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,12 +34,22 @@ import static com.pp1.parkingfinder.model.Constants.ADDRESS;
 import static com.pp1.parkingfinder.model.Constants.AVAILABILITY;
 import static com.pp1.parkingfinder.model.Constants.EMAIL;
 
-
+/*
+Adapter class that displays each listing in a card. This is displayed in a fragment in the
+"SearchListingActivity" class. Incorporates a booking method for customers to make bookings
+*/
 public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
     private List<Listing> listings;
 
+    // initialize popup alert
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+
+    Button btConfirm;
+
+    // Adapter constructor
     public ListingRecyclerViewAdapter(Context context, List<Listing> listings) {
         this.context = context;
         this.listings = listings;
@@ -106,6 +118,12 @@ public class ListingRecyclerViewAdapter extends RecyclerView.Adapter<ListingRecy
             itemView.setOnClickListener(this);
             tvAddress = itemView.findViewById(R.id.address);
             tvAvailability = itemView.findViewById(R.id.availability);
+        }
+
+        // Method to create a popup alert on booking
+        private void createConfirmationPopup(){
+
+            //todo - makes a popup to confirm if the customer wants to make the booking
         }
 
         @Override

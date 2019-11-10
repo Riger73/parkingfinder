@@ -14,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="87dp">
 
-        <EditText
-            android:id="@+id/editTextLocation"
+        <TextView
+            android:id="@+id/textViewLocation"
             android:layout_width="237dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="34dp"
@@ -25,6 +25,7 @@
             android:autofillHints=""
             android:background="@color/DarkGray"
             android:fontFamily="sans-serif-black"
+            android:padding="24dp"
             android:text="Manage Your Bookings"
             android:textAllCaps="true"
             android:textColor="#1566BD"
@@ -40,7 +41,7 @@
             android:layout_marginStart="-23dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/editTextLocation"
+            android:layout_toEndOf="@+id/textViewLocation"
             app:srcCompat="@drawable/bookings" />
     </RelativeLayout>
 

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,27 +41,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-
-public class SearchListingActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
+/*
+Creates activity to display parking listings on search.
+Also displays an interactive map to show the listings on a map. Customers can make a booking by
+selecting a location time combo which then directs them to manage their bookings
+ */
+public class SearchListingActivity extends AppCompatActivity
+        implements View.OnClickListener, OnMapReadyCallback {
 
     // Collection for ListView items
     ArrayList<Listing> listings = new ArrayList<>();
-    //HashMap<String, LatLng> location = new HashMap<String, LatLng>();
     private Context context;
     ArrayAdapter arrayAdapter;
 
+    // Initialize constants
     private static final String TAG = "SearchLisitngActivity";
 
+    // Initialise FB authenticaiton
     FirebaseAuth mAuth;
 
+    // initialize field variables
     private EditText editTextLocation;
     private MapFragment mMapView;
+
     // private ListView listViewParkingListings;
     RecyclerView recyclerView;
     ListingRecyclerViewAdapter listingRecyclerViewAdapter;
-
-    private DatePicker datePicker;
 
     // With current logged in user, calls collection called "Leasers" from remote data store.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -80,7 +84,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         mAuth = FirebaseAuth.getInstance();
         mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
         // listViewParkingListings = findViewById(R.id.listViewParkingListings);
-        editTextLocation = findViewById(R.id.editTextLocation);
+        editTextLocation = findViewById(R.id.textViewLocation);
 
         // Action on button click - Calls button lister on object
         findViewById(R.id.btMenu).setOnClickListener(this);
@@ -99,7 +103,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
         mapFragment.getMapAsync(this);
     }
 
-
+    // Converts String text address to LatLng coordinates
     public LatLng getLocationFromAddress(SearchListingActivity ls, String inputtedAddress) {
 
         Geocoder coder = new Geocoder(ls);
@@ -131,6 +135,8 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
         return resLatLng;
     }
+
+    // Sets map coordinates and markers
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -145,24 +151,26 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
-                                // Todo - retrieving geopoints
                                 String inputAddress = document.getString("address");
 
                                 double lat = -37.8676;
                                 double lng = 144.98099;
 
                                 LatLng latLng = new LatLng(lat, lng);
-                                latLng = getLocationFromAddress(SearchListingActivity.this, inputAddress);
+                                latLng = getLocationFromAddress
+                                        (SearchListingActivity.this, inputAddress);
 
-                                mMap.addMarker(new MarkerOptions().position(latLng).title(inputAddress));
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng
-                                        (lat, lng)).zoom(15).build();
+                                mMap.addMarker(new MarkerOptions().position(latLng)
+                                        .title(inputAddress));
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(new LatLng(lat, lng)).zoom(15).build();
 
                                 mMap.animateCamera(CameraUpdateFactory
                                         .newCameraPosition(cameraPosition));
+
                             }
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.e(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -174,6 +182,7 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    // Loads parking listings from firestore
     private void loadParkingListings() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -187,34 +196,27 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
                             String listData = "";
                             for(QueryDocumentSnapshot document : task.getResult()) {
 
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                // Todo - Make "address" a string deal with Geopoints later
                                 Listing lists = new Listing();
-
                                 lists.setAddress(document.getString("address"));
                                 lists.setAvailability(document.getString("availability"));
 
                                 listings.add(lists);
-
                             }
+                            listingRecyclerViewAdapter = new ListingRecyclerViewAdapter
+                                    (SearchListingActivity.this, listings);
 
-                            //arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, bookings);
-                            listingRecyclerViewAdapter = new ListingRecyclerViewAdapter(SearchListingActivity.this, listings);
-
-                            //listViewParkingListings.setAdapter(arrayAdapter);
                             recyclerView.setAdapter(listingRecyclerViewAdapter);
 
                             listingRecyclerViewAdapter.notifyDataSetChanged();
 
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.e(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
     }
 
-
+    // Sets onClick behavior for buttons and interactive elements
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btMenu: {
@@ -238,21 +240,21 @@ public class SearchListingActivity extends AppCompatActivity implements View.OnC
 
 
     private void loadDatePickerSearch() {
-        //TO BE COMPLETED
+        //todo
     }
 
 
     private void loadAddressSearch() {
-
+        //todo
     }
 
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
+        //todo
     }
 
-
+    //Helper method for converting timestamps to userfriendly String
     public String timestampToString(Long date) {
         String leaserDate;
 
