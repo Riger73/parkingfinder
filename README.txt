@@ -20,6 +20,9 @@ The structure of the app follows MVP (Model View Presentation) with the followin
 #######java/com/pp1/parkingfinder
 
 
+#########adapter
+
+
 #########model
 
 
@@ -34,8 +37,7 @@ The structure of the app follows MVP (Model View Presentation) with the followin
 
 #######layout
 
-All of the presentation is handled in view - thus all the "activities". Model has casses that form the object models for customers, leasers, 
-and making a booking. Utils handles services such as geocoding.
+All of the presentation is handled in view - thus all the "activities". Model has casses that form the object models for customers, Listings, and bookings objects. Utils handles services such as geocoding. Adapters contains classes that handleobject model adapters such as for moving listing or booking objects between client and server.
 
 Requires Marshmello or above.
 An up to date installer is available in our project document archive:
